@@ -1,28 +1,32 @@
+import { BladeProvider } from "@razorpay/blade/components";
+import { bladeTheme } from "@razorpay/blade/tokens";
 import "./App.css";
-import NavBar from "./components/NavBar";
-import { Specimens } from "./constants";
-import Comments from "./components/Comments";
-import useEditor from "./components/useEditor";
+import "@razorpay/blade/fonts.css";
+import {
+  StyledRoot,
+  StyledHeader,
+  StyledContent,
+  StyledLeftNav,
+  StyledMain,
+} from "./components/BaseLayout";
+import Header from "./components/Header/Header";
+import LeftNav from "./components/LeftNav";
 
 function App(): JSX.Element {
-  const { currentSpecimen, onSpecimenSelect, comments, onCommentClick } =
-    useEditor({
-      specimensList: Specimens,
-      containerId: "osd-container",
-    });
-
   return (
-    <div className="main">
-      <NavBar
-        specimens={Specimens}
-        onSpecimenSelect={onSpecimenSelect}
-        selectedSpecimen={currentSpecimen}
-      />
-      <div className="editor">
-        <div id="osd-container"></div>
-      </div>
-      <Comments comments={comments} onCommentClick={onCommentClick} />
-    </div>
+    <BladeProvider themeTokens={bladeTheme}>
+      <StyledRoot>
+        <StyledHeader>
+          <Header />
+        </StyledHeader>
+        <StyledContent>
+          <StyledLeftNav>
+            <LeftNav />
+          </StyledLeftNav>
+          <StyledMain></StyledMain>
+        </StyledContent>
+      </StyledRoot>
+    </BladeProvider>
   );
 }
 
