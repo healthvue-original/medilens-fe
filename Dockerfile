@@ -5,10 +5,11 @@ USER root
 WORKDIR /app
 
 # install package.json first so it get cached
-COPY package*.json yarn.lock .npmrc ./
+COPY package*.json yarn.lock ./
 
 # install yarn and then install dependencies
-RUN yarn install
+RUN npm config list
+RUN yarn
 
 # copy from repo to container and run build
 COPY . .
