@@ -1,6 +1,7 @@
 import "./App.css";
 import Header from "./components/Header/Header";
 import LeftNav from "./components/LeftNav";
+import { Outlet } from "react-router-dom";
 
 function App(): JSX.Element {
   return (
@@ -12,7 +13,9 @@ function App(): JSX.Element {
         <aside className="flex w-[72px]">
           <LeftNav />
         </aside>
-        <main className="flex-1"></main>
+        <main className="flex-1">
+          <Outlet />
+        </main>
       </section>
     </section>
   );
