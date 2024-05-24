@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, defer } from "react-router-dom";
 import App from "./App";
 import Home from "./components/Home";
 import Patients from "./components/Patients";
@@ -15,6 +15,18 @@ export const router = createBrowserRouter(
         {
           path: "/home",
           element: <Home />,
+          loader: async () => {
+            return defer({
+              data: new Promise((res, rej) => {
+                setTimeout(() => res("Home Loaded after 2s"), 2000);
+              }),
+            });
+          },
+          // loader: async () => {
+          //   return new Promise((res, rej) => {
+          //     setTimeout(() => res("Hello"), 5000);
+          //   });
+          // },
         },
         {
           path: "/patients",
