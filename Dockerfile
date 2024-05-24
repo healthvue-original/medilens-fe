@@ -9,7 +9,7 @@ COPY package*.json yarn.lock ./
 
 # install yarn and then install dependencies
 RUN npm config list
-RUN yarn
+RUN yarn install --frozen-lockfile
 
 # copy from repo to container and run build
 COPY . .
