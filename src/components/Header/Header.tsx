@@ -1,15 +1,17 @@
-import { Box, Heading, Text } from "@razorpay/blade/components";
-import UserProfile from "./UserProfile";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default function Header(): JSX.Element {
   return (
-    <Box display="flex" alignItems="center" height="100%">
-      <Box>
-        <Heading marginLeft={"spacing.4"}>HealthVue</Heading>
-      </Box>
-      <Box display="flex" flex="1">
-        <UserProfile />
-      </Box>
-    </Box>
+    <div className="flex h-full items-center">
+      <div>
+        <h2 className="text-xl ml-3">HealthVue</h2>
+      </div>
+      <div className="flex flex-1">
+        <Avatar className="ml-auto mr-4 cursor-pointer">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      </div>
+    </div>
   );
 }

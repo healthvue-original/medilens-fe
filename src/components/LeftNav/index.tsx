@@ -1,52 +1,28 @@
-import {
-  BladeProvider,
-  Box,
-  HomeIcon,
-  PieChartIcon,
-  ReportsIcon,
-  SettingsIcon,
-  Text,
-  Theme,
-} from "@razorpay/blade/components";
-import { bladeTheme } from "@razorpay/blade/tokens";
 import { useState } from "react";
-import styled from "styled-components";
-
-const StyledList = styled.li(
-  ({ theme, selected }: { theme: Theme; selected: boolean }) => `
-    padding : 16px;
-    cursor: pointer;
-    display : flex;
-    flex-direction: column;
-    gap : 8px;
-    align-items : center;
-    justify-content : center;
-    background-color : ${
-      selected ? theme.colors.surface.background.primary.subtle : ""
-    }
-`
-);
+import { LuFiles } from "react-icons/lu";
+import { FaChartPie, FaHome } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 
 const navList = [
   {
     label: "Home",
     id: "home",
-    icon: HomeIcon,
+    Icon: FaHome,
   },
   {
     label: "Cases",
     id: "cases",
-    icon: ReportsIcon,
+    Icon: LuFiles,
   },
   {
     label: "Reports",
     id: "reports",
-    icon: PieChartIcon,
+    Icon: FaChartPie,
   },
   {
     label: "Settings",
     id: "settings",
-    icon: SettingsIcon,
+    Icon: IoMdSettings,
   },
 ];
 
@@ -54,28 +30,27 @@ export default function LeftNav(): JSX.Element {
   const [selectedItem, setSelectedItem] = useState(navList[0]);
 
   return (
-    <BladeProvider colorScheme="dark" themeTokens={bladeTheme}>
-      <Box height="100%" width="100%">
-        <ul>
-          {navList.map((item) => (
-            <StyledList
-              selected={item.id === selectedItem.id}
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
+    <div className=" h-full w-full">
+      <ul className="flex flex-col gap-1 border-r h-full">
+        {navList.map((item) => (
+          <div
+            key={item.id}
+            onClick={() => setSelectedItem(item)}
+            className={`p-1 cursor-pointer`}
+          >
+            <div
+              className={`${
+                selectedItem.id == item.id
+                  ? "bg-zinc-800 text-slate-50 rounded"
+                  : ""
+              } flex flex-col gap-1 items-center justify-center p-4`}
             >
-              <item.icon
-                size="xlarge"
-                color={
-                  item.id === selectedItem.id
-                    ? "surface.icon.primary.normal"
-                    : "surface.icon.gray.subtle"
-                }
-              />
-              <Text>{item.label}</Text>
-            </StyledList>
-          ))}
-        </ul>
-      </Box>
-    </BladeProvider>
+              <item.Icon size={"24px"} />
+              <p className=" text-xs">{item.label}</p>
+            </div>
+          </div>
+        ))}
+      </ul>
+    </div>
   );
 }
