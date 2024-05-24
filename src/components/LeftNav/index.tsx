@@ -41,7 +41,7 @@ export default function LeftNav(): JSX.Element {
             <div
               className={`${
                 selectedItem.id == item.id
-                  ? "bg-zinc-800 text-slate-50 rounded"
+                  ? " bg-primary text-primary-foreground rounded"
                   : ""
               } flex flex-col gap-1 items-center justify-center p-4`}
             >
