@@ -13,7 +13,7 @@ RUN yarn install --frozen-lockfile
 
 # copy from repo to container and run build
 COPY . .
-RUN yarn build
+RUN BASE_URL=/healthvue/ yarn build
 
 
 From node:18-alpine as server

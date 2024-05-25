@@ -1,53 +1,31 @@
-import { createBrowserRouter, defer } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  defer,
+  Route,
+} from "react-router-dom";
 import App from "./App";
 import Home from "./components/Home";
 import Patients from "./components/Patients";
-import Cases from "./components/Cases";
-import Reports from "./components/Reports";
-import Settings from "./components/Settings";
+import { createAPI } from "./services/api";
+
+const api = createAPI({ org: "healthvue" });
+const baseURL = import.meta.env.BASE_URL;
+
+function patientsLoader() {
+  return defer({
+    data: api.getPatients(),
+  });
+}
 
 export const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <App />,
-      children: [
-        {
-          path: "/home",
-          element: <Home />,
-          loader: async () => {
-            return defer({
-              data: new Promise((res, rej) => {
-                setTimeout(() => res("Home Loaded after 2s"), 2000);
-              }),
-            });
-          },
-          // loader: async () => {
-          //   return new Promise((res, rej) => {
-          //     setTimeout(() => res("Hello"), 5000);
-          //   });
-          // },
-        },
-        {
-          path: "/patients",
-          element: <Patients />,
-        },
-        {
-          path: "/cases",
-          element: <Cases />,
-        },
-        {
-          path: "/reports",
-          element: <Reports />,
-        },
-        {
-          path: "/settings",
-          element: <Settings />,
-        },
-      ],
-    },
-  ],
+  createRoutesFromElements(
+    <Route path="/" element={<App api={api} />}>
+      <Route path="/home" element={<Home />} />
+      <Route path="/patients" element={<Patients />} loader={patientsLoader} />
+    </Route>
+  ),
   {
-    basename: "/healthvue/",
+    basename: baseURL,
   }
 );
