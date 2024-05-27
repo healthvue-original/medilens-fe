@@ -2,7 +2,7 @@ import { AsyncTask, ObjectType } from "./types";
 
 const API_HOST = import.meta.env.PROD
   ? "/healthvue-server"
-  : "https://localhost:8080";
+  : "http://localhost:8080";
 
 export const constructURL = (url: string): string => {
   return `${API_HOST}${url}`;

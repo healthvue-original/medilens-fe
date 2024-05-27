@@ -2,11 +2,14 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   defer,
+  Navigate,
+  Outlet,
   Route,
 } from "react-router-dom";
 import App from "./App";
 import Home from "./components/Home";
-import Patients from "./components/Patients";
+import AddPatient from "./components/Patients/AddPatient";
+import PatientsList from "./components/Patients/PatientsList";
 import { createAPI } from "./services/api";
 
 const api = createAPI({ org: "healthvue" });
@@ -21,8 +24,18 @@ function patientsLoader() {
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App api={api} />}>
-      <Route path="/home" element={<Home />} />
-      <Route path="/patients" element={<Patients />} loader={patientsLoader} />
+      <Route index element={<Home />} />
+      <Route
+        path="/patients"
+        element={
+          <div className="h-full">
+            <Outlet />
+          </div>
+        }
+      >
+        <Route path="add" element={<AddPatient />} />
+        <Route index element={<PatientsList />} />
+      </Route>
     </Route>
   ),
   {

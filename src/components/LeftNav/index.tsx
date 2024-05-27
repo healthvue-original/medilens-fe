@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FaChartPie, FaHome, FaUser, FaFileAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { NavLink } from "react-router-dom";
@@ -7,7 +6,7 @@ const navList = [
   {
     label: "Home",
     id: "home",
-    href: "home",
+    href: "/",
     Icon: FaHome,
   },
   {
@@ -45,7 +44,7 @@ export default function LeftNav(): JSX.Element {
             <NavLink
               to={item.href}
               className={({ isActive }) =>
-                `flex flex-col gap-1 items-center justify-center p-4 ${
+                `flex flex-col gap-1 items-center justify-center px-4 py-2 ${
                   isActive ? "bg-primary text-primary-foreground rounded" : ""
                 }`
               }

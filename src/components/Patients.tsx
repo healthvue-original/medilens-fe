@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { Await, useLoaderData } from "react-router-dom";
+import { Await, NavLink, Outlet, useLoaderData } from "react-router-dom";
+import { Button } from "./ui/button";
 
 export default function Patients(): JSX.Element {
   const { data } = useLoaderData() as { data: string };
@@ -20,6 +21,10 @@ export default function Patients(): JSX.Element {
           </div>
         )}
       </Await>
+      <Button>
+        <NavLink to={"add"}>Add Patient</NavLink>
+      </Button>
+      <Outlet />
     </Suspense>
   );
 }
