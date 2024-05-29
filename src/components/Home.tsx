@@ -19,9 +19,9 @@ export default function Home(): JSX.Element {
         <SampleCountCard title="Technicians" />
       </div>
       <div className="flex gap-6 flex-wrap">
-        <SampleChartCard />
-        <SampleChartCard />
-        <SampleChartCard />
+        <SampleChartCard type={"pie"} />
+        <SampleChartCard type={"line"} />
+        <SampleChartCard type={"bar"} />
       </div>
     </div>
   );
@@ -45,13 +45,13 @@ function SampleCountCard({ title }: { title: string }): JSX.Element {
   );
 }
 
-function SampleChartCard(): JSX.Element {
+function SampleChartCard({ type }: { type: any }): JSX.Element {
   return (
     <Card className="h-96 w-[49%]">
       <CardContent className="h-full w-full">
         <ChartWrapper
           chartData={{
-            type: "line",
+            type,
             data: {
               labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
               datasets: [
@@ -66,6 +66,12 @@ function SampleChartCard(): JSX.Element {
               scales: {
                 y: {
                   beginAtZero: true,
+                },
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: `${type == "pie" ? "right" : "top"}`,
                 },
               },
             },

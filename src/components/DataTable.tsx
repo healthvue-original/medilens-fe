@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { FaSort } from "react-icons/fa";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { FaAngleDown } from "react-icons/fa";
 
 import {
@@ -37,6 +38,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useTableMain } from "./TableView/useTable";
+import TableMain from "./TableView/TableBody";
+import { Pagination } from "./TableView/Pagination";
+import { GlobalFilter } from "./TableView/GlobalFilter";
 
 const data: Payment[] = [
   {
@@ -181,6 +186,7 @@ export const columns: ColumnDef<Payment>[] = [
         </Button>
       );
     },
+    filterFn: "fuzzy",
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
@@ -209,7 +215,7 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
-              <FaSort className="h-4 w-4" />
+              <HiOutlineDotsHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -230,32 +236,15 @@ export const columns: ColumnDef<Payment>[] = [
 ];
 
 export function DataTableDemo() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const tableInstance = useTableMain({ data, columns });
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+  return (
+    <div className="w-full h-full flex flex-col">
+      <GlobalFilter tableInstance={tableInstance} />
+      <TableMain tableInstance={tableInstance} />
+      <Pagination tableInstance={tableInstance} />
+    </div>
+  );
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -295,7 +284,7 @@ export function DataTableDemo() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border h-[540px]">
+      <div className="rounded-md border h-[540px] overflow-scroll">
         <Table>
           <TableHeader className=" sticky top-0 bg-primary-foreground">
             {table.getHeaderGroups().map((headerGroup) => (

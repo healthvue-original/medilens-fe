@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@recogito/annotorious": "^2.7.13",
     "@recogito/annotorious-openseadragon": "^2.7.17",
+    "@tanstack/match-sorter-utils": "^8.15.1",
     "@tanstack/react-table": "^8.17.3",
     "chart.js": "^4.4.3",
     "class-variance-authority": "^0.7.0",
