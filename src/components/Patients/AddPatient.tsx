@@ -21,7 +21,7 @@ export default function AddPatient(): JSX.Element {
   };
   return (
     <div className="flex items-center justify-center h-full">
-      <form className=" w-[600px]" onSubmit={onSubmit}>
+      <form className=" w-[440px]" onSubmit={onSubmit}>
         <Card>
           <CardHeader>
             <CardTitle>Add Patient</CardTitle>
@@ -29,12 +29,24 @@ export default function AddPatient(): JSX.Element {
           </CardHeader>
           <CardContent className="flex gap-3 flex-col">
             <div>
-              <Label htmlFor="patient-name">Name</Label>
-              <Input id="patient-name" errorText={formErrors["patient-name"]} />
+              <Label htmlFor="name">Name</Label>
+              <Input id="patient-name" errorText={formErrors["name"]} />
             </div>
             <div>
-              <Label htmlFor="patient-name">Name</Label>
-              <Input id="patient-name" errorText={formErrors["patient-name"]} />
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" errorText={formErrors["email"]} />
+            </div>
+            <div>
+              <Label htmlFor="age">Age</Label>
+              <Input id="age" errorText={formErrors["age"]} />
+            </div>
+            <div>
+              <Label htmlFor="sex">Sex</Label>
+              <Input id="sex" errorText={formErrors["sex"]} />
+            </div>
+            <div>
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" errorText={formErrors["phone"]} />
             </div>
           </CardContent>
           <CardFooter>
