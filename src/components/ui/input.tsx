@@ -20,7 +20,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        <p className="text-red-700 text-sm">{errorText}</p>
+        <p className="text-red-700 text-xs italic">{errorText}</p>
       </div>
     );
   }

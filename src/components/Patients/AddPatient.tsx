@@ -28,7 +28,7 @@ export default function AddPatient(): JSX.Element {
 
     setIsLoading(true);
     setFormErrors({
-      "patient-name": "Field is required",
+      "name": "Field is required",
     });
   };
   const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +37,7 @@ export default function AddPatient(): JSX.Element {
       <DialogTrigger asChild>
         <Button>Add Patient</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="h-full sm:h-auto sm:max-w-[425px]">
         <form onSubmit={onSubmit} className="flex flex-col gap-3">
           <DialogHeader>
             <DialogTitle>Add Patient</DialogTitle>

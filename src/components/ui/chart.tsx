@@ -12,7 +12,7 @@ export default function ChartWrapper({ chartData }: ChartProps): JSX.Element {
       const parentEl = canvasRef.current.parentElement;
       canvasRef.current.width = parentEl?.clientWidth;
       canvasRef.current.height = parentEl?.clientHeight;
-      new Chart(canvasRef.current, chartData);
+      const ch = new Chart(canvasRef.current, { ...chartData });
     }
   }, []);
   return <canvas ref={canvasRef}></canvas>;
