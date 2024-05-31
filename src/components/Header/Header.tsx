@@ -1,19 +1,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { RxHamburgerMenu } from "react-icons/rx";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import LeftNav from "../LeftNav";
 import { useState } from "react";
 
 export default function Header(): JSX.Element {
+  const [isOpen, setIsOpen] = useState<undefined | boolean>(false);
+
   return (
     <div className="flex h-full items-center">
       <div className="sm:hidden mt-1 ml-3">
-        <MobileMenu trigger={<RxHamburgerMenu size={"24px"}/>} />
+        <MobileMenu isOpen={isOpen} setIsOpen={setIsOpen} />
+        <RxHamburgerMenu size={"24px"} onClick={() => setIsOpen(true)} />
       </div>
       <div>
         <h2 className="text-xl ml-3">HealthVue</h2>
@@ -29,16 +28,19 @@ export default function Header(): JSX.Element {
   );
 }
 
-export function MobileMenu({ trigger }: { trigger: JSX.Element }): JSX.Element {
-  const [open, isOpen] = useState(true);
-
+export function MobileMenu({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: undefined | boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+}): JSX.Element {
   return (
-    <Sheet open={open} onOpenChange={() => isOpen(undefined)}>
-      <SheetTrigger>{trigger}</SheetTrigger>
+    <Sheet open={isOpen} onOpenChange={() => setIsOpen(undefined)}>
       <SheetContent
         side={"left"}
         className="w-[72px] p-0 pt-4 mobile-menu"
-        onClick={() => isOpen(false)}
+        onClick={() => setIsOpen(false)}
       >
         <LeftNav />
       </SheetContent>
