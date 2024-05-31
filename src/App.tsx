@@ -15,7 +15,7 @@ function App({ api }: { api: API }): JSX.Element {
             <Header />
           </header>
           <section className="flex flex-1 overflow-hidden">
-            <aside className="hidden sm:block flex w-[72px]">
+            <aside className="hidden sm:flex w-[72px]">
               <LeftNav />
             </aside>
             <main className="flex-1 overflow-scroll">
