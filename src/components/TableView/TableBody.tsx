@@ -19,7 +19,7 @@ export default function TableMain({
   return (
     <div className="rounded-md border overflow-scroll flex-1">
       <Table>
-        <TableHeader className=" sticky top-0 bg-primary-foreground">
+        <TableHeader className=" sticky top-0 bg-secondary">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
