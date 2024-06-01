@@ -36,5 +36,10 @@ export function createAPI({ org }: createAPIProps): API {
       fetchAPI,
       resTransformers.getPatients
     ),
+    addPatient: asyncPipe(
+      reqTransformers.addPatient,
+      fetchAPI,
+      resTransformers.addPatient
+    ),
   };
 }

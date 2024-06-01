@@ -1,3 +1,5 @@
+import { Patient } from "@/components/Patients/types";
+
 type ConstructURL = { constructURL: (url: string) => string };
 
 export type createAPIProps = {
@@ -17,12 +19,13 @@ export type ReqTransformer<T> = AsyncTask<T, FetchOptions>;
 
 export type ResTransformer<T, U> = AsyncTask<T, U>;
 
-type GetPatientsResponse = {
-  name: string;
-};
+type GetPatientsResponse = Patient[];
+
+type AddPatientResponse = Patient;
 
 export type API = {
   getPatients: () => Promise<GetPatientsResponse>;
+  addPatient: (patient: Patient) => Promise<AddPatientResponse>;
 };
 
 export type ObjectType = { [key: string]: any };

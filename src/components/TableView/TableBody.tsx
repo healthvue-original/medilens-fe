@@ -18,13 +18,16 @@ export default function TableMain({
   const columns = table.getAllColumns();
   return (
     <div className="rounded-md border overflow-scroll flex-1">
-      <Table>
+      <Table className="table-fixed">
         <TableHeader className=" sticky top-0 bg-secondary">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    style={{ width: `${header.getSize()}px` }}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(

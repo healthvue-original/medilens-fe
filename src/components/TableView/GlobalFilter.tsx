@@ -8,12 +8,15 @@ export function GlobalFilter({
   tableInstance: Table<any>;
 }): JSX.Element {
   const table = tableInstance;
+  const filterValue = table.getState().globalFilter;
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
       <DebouncedInput
-        placeholder="Filter emails..."
-        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-        onChange={(value) => table.getColumn("email")?.setFilterValue(value)}
+        placeholder="Filter data..."
+        value={(filterValue as string) ?? ""}
+        onChange={(value) => {
+          table.setGlobalFilter(value);
+        }}
         className="max-w-sm"
       />
     </div>

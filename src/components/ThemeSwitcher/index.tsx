@@ -10,7 +10,7 @@ import {
 import { useTheme } from "@/context/ThemeProvider";
 
 export function ThemeSwitcher() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -21,14 +21,23 @@ export function ThemeSwitcher() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+      <DropdownMenuContent align="end" className="flex flex-col gap-1">
+        <DropdownMenuItem
+          onClick={() => setTheme("light")}
+          className={`${theme == "light" && "bg-secondary"}`}
+        >
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("dark")}
+          className={`${theme == "dark" && "bg-secondary"}`}
+        >
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className={`${theme == "system" && "bg-secondary"}`}
+        >
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

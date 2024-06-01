@@ -18,3 +18,9 @@ export function getAnnotations({ specimenId }: { specimenId: string }) {
   const annotations = localStorage.getItem(specimenId) ?? "[]";
   return JSON.parse(annotations);
 }
+
+export function waitFor(delay: number = 2000, data: any): Promise<any> {
+  return new Promise((res) => {
+    setTimeout(() => res(data), delay);
+  });
+}

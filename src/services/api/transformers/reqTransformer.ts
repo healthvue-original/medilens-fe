@@ -10,5 +10,12 @@ export const createReqTransformers = ({
         method: "GET",
       };
     },
+    addPatient: async (patient) => {
+      return {
+        url: constructURL("/patients"),
+        method: "POST",
+        body: JSON.stringify(patient),
+      };
+    },
   };
 };
