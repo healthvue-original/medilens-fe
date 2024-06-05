@@ -31,6 +31,12 @@ export function createAPI({ org }: createAPIProps): API {
     return fetch(url, mergedFetchOptions);
   }
   return {
+    getUserData: asyncPipe(
+      reqTransformers.getUserData,
+      fetchAPI,
+      resTransformers.getUserData
+    ),
+
     getPatients: asyncPipe(
       reqTransformers.getPatients,
       fetchAPI,
@@ -40,6 +46,72 @@ export function createAPI({ org }: createAPIProps): API {
       reqTransformers.addPatient,
       fetchAPI,
       resTransformers.addPatient
+    ),
+
+    getCases: asyncPipe(
+      reqTransformers.getCases,
+      fetchAPI,
+      resTransformers.getCases
+    ),
+    addCase: asyncPipe(
+      reqTransformers.addCase,
+      fetchAPI,
+      resTransformers.addCase
+    ),
+
+    getHospitals: asyncPipe(
+      reqTransformers.getHospitals,
+      fetchAPI,
+      resTransformers.getHospitals
+    ),
+    addHospital: asyncPipe(
+      reqTransformers.addHospital,
+      fetchAPI,
+      resTransformers.addHospital
+    ),
+
+    getGroups: asyncPipe(
+      reqTransformers.getGroups,
+      fetchAPI,
+      resTransformers.getGroups
+    ),
+    addGroup: asyncPipe(
+      reqTransformers.addGroup,
+      fetchAPI,
+      resTransformers.addGroup
+    ),
+
+    getSpecimens: asyncPipe(
+      reqTransformers.getSpecimens,
+      fetchAPI,
+      resTransformers.getSpecimens
+    ),
+    addSpecimen: asyncPipe(
+      reqTransformers.addSpecimen,
+      fetchAPI,
+      resTransformers.addSpecimen
+    ),
+
+    getScanners: asyncPipe(
+      reqTransformers.getScanners,
+      fetchAPI,
+      resTransformers.getScanners
+    ),
+    addScanner: asyncPipe(
+      reqTransformers.addScanner,
+      fetchAPI,
+      resTransformers.addScanner
+    ),
+
+    getScanJobs: asyncPipe(
+      reqTransformers.getScanJobs,
+      fetchAPI,
+      resTransformers.getScanJobs
+    ),
+    addScanJob: asyncPipe(
+      reqTransformers.addScanJob,
+      fetchAPI,
+      resTransformers.addScanJob
     ),
   };
 }

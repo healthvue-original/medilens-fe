@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import App from "./App";
+import CasesList from "./components/Cases/CasesList";
 import Home from "./components/Home";
 import PatientsList from "./components/Patients/PatientsList";
 import { createAPI } from "./services/api";
@@ -13,7 +14,9 @@ import { createAPI } from "./services/api";
 const api = createAPI({ org: "healthvue" });
 const baseURL = import.meta.env.BASE_URL;
 
-function patientsLoader() {
+window.api = api;
+
+async function patientsLoader() {
   return defer({
     patients: api.getPatients(),
   });
@@ -42,6 +45,28 @@ async function addPatientAction({ request }: { request: Request }) {
   };
 }
 
+async function casesLoader() {
+  return defer({
+    cases: api.getCases(),
+    patients: api.getPatients(),
+  });
+}
+
+async function addCaseAction({ request }: { request: Request }) {
+  const formData = await request.formData();
+  const caseObj = {
+    name: formData.get("name") as string,
+    description: formData.get("description") as string,
+    patient_id: +(formData.get("patient") ?? 0) as number,
+    referred_by: 1,
+  };
+
+  await api.addCase(caseObj);
+  return {
+    caseObj,
+  };
+}
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App api={api} />}>
@@ -59,6 +84,21 @@ export const router = createBrowserRouter(
           element={<PatientsList />}
           loader={patientsLoader}
           action={addPatientAction}
+        />
+      </Route>
+      <Route
+        path="/cases"
+        element={
+          <div className="h-full">
+            <Outlet />
+          </div>
+        }
+      >
+        <Route
+          index
+          element={<CasesList />}
+          loader={casesLoader}
+          action={addCaseAction}
         />
       </Route>
     </Route>

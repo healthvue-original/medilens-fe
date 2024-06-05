@@ -1,17 +1,18 @@
-import { Patient } from "./types";
+import { Case } from "./types";
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useTableMain } from "../TableView/useTable";
 import TableMain from "../TableView/TableBody";
 import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import AddPatientDialog from "./AddPatient";
+import AddCaseDialog from "./AddCaseDialog";
+import { Patient } from "../Patients/types";
 
-const PatientColumnDef: ColumnDef<Patient>[] = [
+const PatientColumnDef: ColumnDef<Case>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -54,8 +55,8 @@ const PatientColumnDef: ColumnDef<Patient>[] = [
     size: 100,
   },
   {
-    id: "age",
-    accessorKey: "age",
+    id: "description",
+    accessorKey: "description",
     header: ({ column }) => {
       return (
         <Button
@@ -63,7 +64,7 @@ const PatientColumnDef: ColumnDef<Patient>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Age
+          Description
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -71,31 +72,35 @@ const PatientColumnDef: ColumnDef<Patient>[] = [
     size: 64,
   },
   {
-    id: "email",
-    accessorKey: "email",
-    header: "Email",
-    filterFn: "fuzzy",
-  },
-  {
-    id: "sex",
-    accessorKey: "sex",
-    header: "Gender",
+    id: "created_at",
+    accessorKey: "created_at",
+    header: "Created At",
   },
 ];
 
-export function PatientTableView({ data }: { data: Patient[] }): JSX.Element {
+export function CasesTableView({
+  cases,
+  patients,
+}: {
+  cases: Case[];
+  patients: Patient[];
+}): JSX.Element {
   const [showAddPatientForm, setShowAddPatientForm] = useState(false);
-  const tableInstance = useTableMain({ data, columns: PatientColumnDef });
+  const tableInstance = useTableMain({
+    data: cases,
+    columns: PatientColumnDef,
+  });
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={() => setShowAddPatientForm(true)}>
-            Add Patient
-          </Button>
+          <Button onClick={() => setShowAddPatientForm(true)}>Add Case</Button>
           {showAddPatientForm && (
-            <AddPatientDialog onClose={() => setShowAddPatientForm(false)} />
+            <AddCaseDialog
+              onClose={() => setShowAddPatientForm(false)}
+              patients={patients}
+            />
           )}
         </div>
         <div className="flex-1">
