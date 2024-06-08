@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import openseadragon from "openseadragon";
+import OpenSeadragon from "openseadragon";
 import Annotorious from "@recogito/annotorious-openseadragon";
 import "@recogito/annotorious-openseadragon/dist/annotorious.min.css";
-import { getAnnotations, addAnnotation } from "../utils";
-import { Specimen } from "./NavBar";
-
-window.openseadragon = openseadragon;
+import { getAnnotations, addAnnotation } from "./utils";
+import { Specimen } from "../NavBar";
 
 export default function useEditor({
   containerId,
@@ -27,9 +25,6 @@ export default function useEditor({
 
   const onCommentClick = (comment) => {
     annotorious.panTo(comment);
-    // annotorious.fitBounds(comment, true);
-    // const rect = new openseadragon.Rect(1285, 392);
-    // viewer.viewport.fitBounds(rect);
   };
 
   const addComment = (annotation) => {
@@ -49,11 +44,10 @@ export default function useEditor({
     viewer?.destroy?.();
     annotorious?.destroy?.();
 
-    const osdViewer = openseadragon({
+    const osdViewer = OpenSeadragon({
       id: containerId,
       prefixUrl: "/osd/images/",
       tileSources: currentSpecimen.src,
-      annotationTools: true,
       maxZoomLevel: 500,
     });
     setViewer(osdViewer);

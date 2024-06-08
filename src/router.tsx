@@ -10,6 +10,7 @@ import CasesList from "./components/Cases/CasesList";
 import Home from "./components/Home";
 import PatientsList from "./components/Patients/PatientsList";
 import ScanJobsList from "./components/ScanJobs/ScanJobsList";
+import SpecimenView from "./components/SpecimenView";
 import { createAPI } from "./services/api";
 
 const api = createAPI({ org: "healthvue" });
@@ -100,6 +101,7 @@ export const router = createBrowserRouter(
         }
       >
         <Route index element={<ScanJobsList />} loader={scanJobsLoader} />
+        <Route path="/scans/:scanId" element={<SpecimenView />} />
       </Route>
       <Route path="/reports" element={<div>Reports</div>} />
       <Route path="/settings" element={<div>Settings</div>} />

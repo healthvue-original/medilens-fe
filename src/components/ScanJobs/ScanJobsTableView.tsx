@@ -10,6 +10,7 @@ import { Button } from "../ui/button";
 import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
 import AddScanJobDialog from "./AddScanJobDialog";
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
   {
@@ -84,6 +85,17 @@ const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
     id: "created_at",
     accessorKey: "created_at",
     header: "Created At",
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <Button size={"sm"} className="p-1 h-max" variant={"link"}>
+        <NavLink className={"text-[12px]"} to={"/scans/3"}>
+          View Scan
+        </NavLink>
+      </Button>
+    ),
   },
 ];
 
