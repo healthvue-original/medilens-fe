@@ -1,3 +1,4 @@
+import { RiBodyScanFill } from "react-icons/ri";
 import { FaChartPie, FaHome, FaUser, FaFileAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { NavLink } from "react-router-dom";
@@ -20,6 +21,12 @@ const navList = [
     href: "cases",
     id: "cases",
     Icon: FaFileAlt,
+  },
+  {
+    label: "Scans",
+    href: "scans",
+    id: "scans",
+    Icon: RiBodyScanFill,
   },
   {
     label: "Reports",

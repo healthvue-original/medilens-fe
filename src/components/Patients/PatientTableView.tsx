@@ -81,6 +81,11 @@ const PatientColumnDef: ColumnDef<Patient>[] = [
     accessorKey: "sex",
     header: "Gender",
   },
+  {
+    id: "phone",
+    accessorKey: "phone",
+    header: "Phone",
+  },
 ];
 
 export function PatientTableView({ data }: { data: Patient[] }): JSX.Element {

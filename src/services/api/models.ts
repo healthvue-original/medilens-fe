@@ -43,18 +43,25 @@ export type GroupModel = {
   name: string;
 } & CreatedUpdatedAt;
 
+export type ScannerSlot = {
+  id: number;
+  order: number;
+  status: "available" | "busy";
+};
+
 export type ScannerModel = {
   id: number;
   name: string;
   group_id: number;
+  slots: ScannerSlot[];
 } & CreatedUpdatedAt;
 
 export type ScanJobModel = {
   id: number;
   scanner_id: number;
   case_id: number;
-  group_id: number;
   status: string;
+  slot_id: number;
 } & CreatedUpdatedAt;
 
 /*

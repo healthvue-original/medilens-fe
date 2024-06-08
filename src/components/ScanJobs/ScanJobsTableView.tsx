@@ -1,4 +1,3 @@
-import { Case } from "./types";
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,11 +7,11 @@ import TableMain from "../TableView/TableBody";
 import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
+import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
+import AddScanJobDialog from "./AddScanJobDialog";
 import { useState } from "react";
-import AddCaseDialog from "./AddCaseDialog";
-import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
 
-const PatientColumnDef: ColumnDef<Case>[] = [
+const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -37,8 +36,8 @@ const PatientColumnDef: ColumnDef<Case>[] = [
     size: 48,
   },
   {
-    id: "name",
-    accessorKey: "name",
+    id: "scanner_id",
+    accessorKey: "scanner_id",
     filterFn: "fuzzy",
     header: ({ column }) => {
       return (
@@ -47,7 +46,7 @@ const PatientColumnDef: ColumnDef<Case>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Scanner Id
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -55,8 +54,8 @@ const PatientColumnDef: ColumnDef<Case>[] = [
     size: 100,
   },
   {
-    id: "description",
-    accessorKey: "description",
+    id: "case_id",
+    accessorKey: "case_id",
     header: ({ column }) => {
       return (
         <Button
@@ -64,12 +63,22 @@ const PatientColumnDef: ColumnDef<Case>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Description
+          Case Id
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     size: 164,
+  },
+  {
+    id: "slot_id",
+    accessorKey: "slot_id",
+    header: "Slot Id",
+  },
+  {
+    id: "status",
+    accessorKey: "status",
+    header: "Status",
   },
   {
     id: "created_at",
@@ -78,18 +87,19 @@ const PatientColumnDef: ColumnDef<Case>[] = [
   },
 ];
 
-export function CasesTableView({
+export function ScanJobsTableView({
+  scanJobs,
+  scanners,
   cases,
-  patients,
-  hospitals,
 }: {
+  scanJobs: ScanJobModel[];
   cases: CaseModel[];
-  patients: PatientModel[];
-  hospitals: HospitalModel[];
+  scanners: ScannerModel[];
 }): JSX.Element {
-  const [showAddPatientForm, setShowAddPatientForm] = useState(false);
+  const [showAddJobForm, setShowAddJobForm] = useState(false);
+
   const tableInstance = useTableMain({
-    data: cases,
+    data: scanJobs,
     columns: PatientColumnDef,
   });
 
@@ -97,12 +107,14 @@ export function CasesTableView({
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={() => setShowAddPatientForm(true)}>Add Case</Button>
-          {showAddPatientForm && (
-            <AddCaseDialog
-              closeDialog={() => setShowAddPatientForm(false)}
-              patients={patients}
-              hospitals={hospitals}
+          <Button onClick={() => setShowAddJobForm(true)}>
+            Start New Scan
+          </Button>
+          {showAddJobForm && (
+            <AddScanJobDialog
+              closeDialog={() => setShowAddJobForm(false)}
+              scanners={scanners}
+              cases={cases}
             />
           )}
         </div>

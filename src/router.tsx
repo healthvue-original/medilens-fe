@@ -9,6 +9,7 @@ import App from "./App";
 import CasesList from "./components/Cases/CasesList";
 import Home from "./components/Home";
 import PatientsList from "./components/Patients/PatientsList";
+import ScanJobsList from "./components/ScanJobs/ScanJobsList";
 import { createAPI } from "./services/api";
 
 const api = createAPI({ org: "healthvue" });
@@ -30,7 +31,7 @@ async function addPatientAction({ request }: { request: Request }) {
     email: formData.get("email") as string,
     sex: formData.get("sex") as string,
     phone: +(formData.get("phone") ?? 0) as number,
-    referred_by: 1,
+    created_by: 1,
   };
   if (Object.values(patient).some((val) => !val)) {
     return {
@@ -49,22 +50,16 @@ async function casesLoader() {
   return defer({
     cases: api.getCases(),
     patients: api.getPatients(),
+    hospitals: api.getHospitals(),
   });
 }
 
-async function addCaseAction({ request }: { request: Request }) {
-  const formData = await request.formData();
-  const caseObj = {
-    name: formData.get("name") as string,
-    description: formData.get("description") as string,
-    patient_id: +(formData.get("patient") ?? 0) as number,
-    referred_by: 1,
-  };
-
-  await api.addCase(caseObj);
-  return {
-    caseObj,
-  };
+async function scanJobsLoader() {
+  return defer({
+    scanJobs: api.getScanJobs(),
+    cases: api.getCases(),
+    scanners: api.getScanners(),
+  });
 }
 
 export const router = createBrowserRouter(
@@ -94,13 +89,20 @@ export const router = createBrowserRouter(
           </div>
         }
       >
-        <Route
-          index
-          element={<CasesList />}
-          loader={casesLoader}
-          action={addCaseAction}
-        />
+        <Route index element={<CasesList />} loader={casesLoader} />
       </Route>
+      <Route
+        path="/scans"
+        element={
+          <div className="h-full">
+            <Outlet />
+          </div>
+        }
+      >
+        <Route index element={<ScanJobsList />} loader={scanJobsLoader} />
+      </Route>
+      <Route path="/reports" element={<div>Reports</div>} />
+      <Route path="/settings" element={<div>Settings</div>} />
     </Route>
   ),
   {

@@ -1,19 +1,6 @@
-import { Check, ChevronsUpDown } from "lucide-react";
+import { useRevalidator } from "react-router-dom";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContentWithoutPortal,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import {
@@ -24,159 +11,107 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  useActionData,
-  useNavigation,
-  useSubmit,
-} from "react-router-dom";
-import { FormEvent, useEffect, useState } from "react";
-import { Patient } from "../Patients/types";
+import { useState } from "react";
+import { HospitalModel, PatientModel } from "@/services/api/models";
+import { SelectPopover } from "../SelectPopover";
+import { useAPI } from "@/context/APIProvider";
+import { CasePayload } from "@/services/api/types";
+import * as React from "react";
 
 export default function AddCaseDialog({
-  onClose,
+  closeDialog,
   patients,
+  hospitals,
 }: {
-  onClose: () => void;
-  patients: Patient[];
+  closeDialog: () => void;
+  patients: PatientModel[];
+  hospitals: HospitalModel[];
 }): JSX.Element | null {
-  const { state } = useNavigation();
-  const action = useActionData();
-  const submit = useSubmit();
-  const formErrors = action?.formErrors ?? {};
-  const [patientId, setPatientId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [patient_id, setPatientId] = useState("");
+  const [hospital_id, setHospitalId] = useState("");
+  const revalidator = useRevalidator();
+  const api = useAPI();
 
-  const addCase = (e: FormEvent) => {
+  const addCase = (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    submit(
-      { patientId, ...Object.fromEntries(formData.entries()) },
-      {
-        method: "POST",
-      }
-    );
+    const formData = new FormData(e.target as HTMLFormElement);
+    const payload: CasePayload = {
+      name: formData.get("name") as string,
+      description: formData.get("description") as string,
+      patient_id: +patient_id,
+      hospital_id: +hospital_id,
+      created_by: 1,
+    };
+
+    setLoading(true);
+
+    api.addCase(payload).then(() => {
+      setLoading(false);
+      revalidator.revalidate();
+      closeDialog();
+    });
   };
 
-  useEffect(() => {
-    if (state === "loading") {
-      onClose();
-    }
-  }, [state]);
+  const transformedPatients = patients.map((p) => ({
+    ...p,
+    id: `${p.id}`,
+    value: `${p.name} - ${p.id}`,
+  }));
+
+  const transformedHospitals = hospitals.map((h) => ({
+    ...h,
+    id: `${h.id}`,
+    value: `${h.name} - ${h.id}`,
+  }));
+
   return (
-    <Dialog defaultOpen={true} onOpenChange={onClose}>
+    <Dialog defaultOpen={true} onOpenChange={closeDialog}>
       <DialogContent className="h-full sm:h-auto sm:max-w-[425px]">
         <form className="flex flex-col gap-3 mt-8 " onSubmit={addCase}>
           <DialogHeader>
             <DialogTitle>Add Case</DialogTitle>
             <DialogDescription>Add entry for new Case</DialogDescription>
           </DialogHeader>
-          <div className="flex items-center gap-4">
-            <Label htmlFor="name">Patient</Label>
-            <PatientList patients={patients} setPatientId={setPatientId} />
+          <div>
+            <Label htmlFor="patient">Patient</Label>
+            <div className=" w-full">
+              <SelectPopover
+                items={transformedPatients}
+                btnLabel="Associate Patient"
+                placeholder="Select Patient"
+                emptyMessage="No Patient Found"
+                onSelect={(item) => setPatientId(item.id)}
+              />
+            </div>
           </div>
           <div>
             <Label htmlFor="name">Name</Label>
-            <Input id="name" name="name" errorText={formErrors["name"]} />
+            <Input id="name" name="name" />
           </div>
           <div>
             <Label htmlFor="description">Description</Label>
-            <Input
-              id="description"
-              name="description"
-              errorText={formErrors["description"]}
-            />
+            <Input id="description" name="description" />
+          </div>
+          <div>
+            <Label htmlFor="hospital">Hospital</Label>
+            <div className=" w-full">
+              <SelectPopover
+                items={transformedHospitals}
+                btnLabel="Associate Hospital"
+                placeholder="Select Hospital"
+                emptyMessage="No Hospital Found"
+                onSelect={(item) => setHospitalId(item.id)}
+              />
+            </div>
           </div>
           <DialogFooter>
-            <Button
-              type="submit"
-              loading={state === "submitting"}
-              loadingText="Saving..."
-            >
+            <Button type="submit" loading={loading} loadingText="Saving...">
               Save
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  );
-}
-
-export function PatientList({
-  patients,
-  setPatientId,
-}: {
-  patients: Patient[];
-}) {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
-  const [filteredPatients, setFilteredPatients] = useState(patients);
-
-  const searchPatient = (e: InputEvent) => {
-    const value = e.target?.value ?? "";
-    if (!value) {
-      setFilteredPatients(patients);
-    }
-    setFilteredPatients(patients.filter((pt) => pt.name.startsWith(value)));
-  };
-
-  useEffect(() => {
-    if (!open) {
-      setFilteredPatients(patients);
-    }
-  }, [open]);
-
-  return (
-    <Popover open={open} onOpenChange={setOpen} modal={false}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-[200px] justify-between"
-        >
-          {value
-            ? patients.find((patient) => String(patient.id) === value)?.name
-            : "Associate Patient..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
-      <PopoverContentWithoutPortal
-        asChild
-        className="w-[200px] p-0 overflow-scroll"
-      >
-        <Command>
-          <Input
-            name="patient"
-            placeholder="Search Patient..."
-            className=" focus-visible:ring-0"
-            onChange={searchPatient}
-          />
-          <CommandEmpty>No framework found.</CommandEmpty>
-          <CommandGroup>
-            <CommandList className=" overflow-scroll">
-              {filteredPatients.map((patient) => (
-                <CommandItem
-                  key={patient.id}
-                  value={String(patient.id)}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
-                    setPatientId(currentValue);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      "mr-2 h-4 w-4",
-                      value === String(patient.id) ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  {patient.name} ({patient.id})
-                </CommandItem>
-              ))}
-            </CommandList>
-          </CommandGroup>
-        </Command>
-      </PopoverContentWithoutPortal>
-    </Popover>
   );
 }

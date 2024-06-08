@@ -101,7 +101,7 @@ export const createReqTransformers = ({
     },
     addScanJob: async (scan_job) => {
       return {
-        url: constructURL("/scan_jobs"),
+        url: constructURL(`/scanners/${scan_job.scanner_id}/jobs`),
         method: "POST",
         body: JSON.stringify(scan_job),
       };

@@ -10,26 +10,19 @@ import { writeFileSync } from "fs";
 
 // --------------- Utils ----------------
 
-const ageDictionary = NumberDictionary.generate({ min: 1, max: 100 });
-
 const sexDictionary = ["male", "female"];
 
-const phoneDictionary = NumberDictionary.generate({
-  min: 9000000000,
-  max: 9999999999,
-});
-
 const nameGenerator = () => uniqueNamesGenerator({ dictionaries: [names] });
-const ageGenerator = () =>
-  +uniqueNamesGenerator({ dictionaries: [ageDictionary] });
+const ageGenerator = () => +NumberDictionary.generate({ min: 1, max: 100 })[0];
 const sexGenerator = () =>
   uniqueNamesGenerator({ dictionaries: [sexDictionary] });
 const emailGenerator = (name) =>
   name.replace(/\s+/g, "").toLowerCase() + "@gmail.com";
 const phoneGenerator = () =>
-  +uniqueNamesGenerator({
-    dictionaries: [phoneDictionary],
-  });
+  +NumberDictionary.generate({
+    min: 9000000000,
+    max: 9999999999,
+  })[0];
 const descriptionGenerator = () =>
   uniqueNamesGenerator({ dictionaries: [colors, adjectives, animals] });
 
@@ -47,28 +40,20 @@ const createPatient = () => {
   };
 };
 
-// console.log(createPatient());
-
 // -------------- Hospital -----------------
 
 const createHospital = () => ({
   name: uniqueNamesGenerator({ dictionaries: [names] }) + " Medicals",
 });
 
-// console.log(createHospital());
-
 // -------------- Cases -----------------
 
 const createCase = ({ patientCount, hospitalCount }) => {
   const patientIdGenerator = () =>
-    +uniqueNamesGenerator({
-      dictionaries: [NumberDictionary.generate({ min: 1, max: patientCount })],
-    });
+    +NumberDictionary.generate({ min: 1, max: patientCount })[0];
 
   const hospitalIdGenerator = () =>
-    +uniqueNamesGenerator({
-      dictionaries: [NumberDictionary.generate({ min: 1, max: hospitalCount })],
-    });
+    +NumberDictionary.generate({ min: 1, max: hospitalCount })[0];
 
   const statusGenerator = () =>
     uniqueNamesGenerator({
@@ -84,7 +69,26 @@ const createCase = ({ patientCount, hospitalCount }) => {
   };
 };
 
-// console.log(createCase({ patientCount: 10, hospitalCount: 5 }));
+// -------------- Scanners -----------------
+
+const createScanner = (_, index) => {
+  return {
+    name: `Floor-${index}`,
+    group_id: 1,
+  };
+};
+
+// ------------------- Jobs --------------------
+
+const createScanJob = ({ casesCount, scannerCount }) => {
+  return {
+    case_id: +NumberDictionary.generate({ min: 1, max: casesCount })[0],
+    scanner_id: +NumberDictionary.generate({ min: 1, max: scannerCount })[0],
+    slot_id: +NumberDictionary.generate({ min: 1, max: 5 })[0],
+  };
+};
+
+// ------------------------------------------------
 
 const generateData = (generator, count) =>
   Array.from({ length: count }).map(generator);
@@ -92,6 +96,8 @@ const generateData = (generator, count) =>
 const patientCount = 300;
 const hospitalCount = 50;
 const casesCount = 1200;
+const scannerCount = 3;
+const scanJobsCount = 30;
 
 const mockData = {
   patients: generateData(createPatient, patientCount),
@@ -100,24 +106,33 @@ const mockData = {
     () => createCase({ patientCount, hospitalCount }),
     casesCount
   ),
+  scanners: generateData(createScanner, scannerCount),
+  scan_jobs: generateData(
+    () => createScanJob({ casesCount, scannerCount }),
+    scanJobsCount
+  ),
 };
 
-/*
-
-const generateDataByAPI = async () => {
-  // patients
-  const { patients, cases, hospitals } = mockData;
-  await Promise.all(patients.map((patient) => api.addPatient(patient)));
-  await Promise.all(hospitals.map((hospital) => api.addHospital(hospital)));
-  await Promise.all(cases.map((caseObj) => api.addCase(caseObj)));
-};
-
-*/
-
-writeFileSync("mockData.js", `const mockData = ${JSON.stringify(mockData)}; 
+writeFileSync(
+  "mockData.js",
+  `const mockData = ${JSON.stringify(mockData)};
     const generateDataByAPI = async () => {
-    const { patients, cases, hospitals } = mockData;
+    const { patients, cases, hospitals, scanners, scan_jobs } = mockData;
+
     await Promise.all(patients.map((patient) => api.addPatient(patient)));
+    console.log("patients Added");
+
     await Promise.all(hospitals.map((hospital) => api.addHospital(hospital)));
+    console.log("Hospitals Added");
+
     await Promise.all(cases.map((caseObj) => api.addCase(caseObj)));
-  };`);
+    console.log("Cases Added");
+
+    await Promise.all(scanners.map(scanner => api.addScanner(scanner)));
+    console.log("Scanners Added");
+
+    await Promise.all(scan_jobs.map(job => api.addScanJob(job)));
+    console.log("Jobs Added");
+
+  };`
+);

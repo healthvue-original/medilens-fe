@@ -28,21 +28,21 @@ export type ReqTransformer<T> = AsyncTask<T, FetchOptions>;
 
 export type ResTransformer<T, U> = AsyncTask<T, U>;
 
-type CommonOmit = "id" | "created_at" | "updated_at";
+export type CommonOmit = "id" | "created_at" | "updated_at";
 
-type PatientPayload = Omit<PatientModel, CommonOmit>;
+export type PatientPayload = Omit<PatientModel, CommonOmit>;
 
-type CasePayload = Omit<CaseModel, CommonOmit | "status">;
+export type CasePayload = Omit<CaseModel, CommonOmit | "status">;
 
-type HospitalPayload = Omit<HospitalModel, CommonOmit>;
+export type HospitalPayload = Omit<HospitalModel, CommonOmit>;
 
-type GroupPayload = Omit<GroupModel, CommonOmit>;
+export type GroupPayload = Omit<GroupModel, CommonOmit>;
 
-type SpecimenPayload = Omit<SpecimenModel, CommonOmit>;
+export type SpecimenPayload = Omit<SpecimenModel, CommonOmit>;
 
-type ScannerPayload = Omit<ScannerModel, CommonOmit>;
+export type ScannerPayload = Omit<ScannerModel, CommonOmit>;
 
-type ScanJobPayload = Omit<ScanJobModel, CommonOmit>;
+export type ScanJobPayload = Omit<ScanJobModel, CommonOmit | "status">;
 
 export type API = {
   getUserData: () => Promise<UserModel>;

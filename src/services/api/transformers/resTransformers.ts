@@ -55,8 +55,8 @@ export const createResTransformers = (
     },
 
     getScanners: async (response): Promise<any> => {
-      const data = await response.json();
-      return data?.scanners ?? [];
+      const resp = await response.json();
+      return resp.data?.scanners ?? [];
     },
     addScanner: async (response): Promise<any> => {
       const resp = await response.json();
@@ -64,8 +64,8 @@ export const createResTransformers = (
     },
 
     getScanJobs: async (response): Promise<any> => {
-      const data = await response.json();
-      return data?.scanJobs ?? [];
+      const resp = await response.json();
+      return resp.data?.jobs ?? [];
     },
     addScanJob: async (response): Promise<any> => {
       const resp = await response.json();
