@@ -1,6 +1,6 @@
 import { AsyncTask, ObjectType } from "./types";
 
-const API_HOST = import.meta.env.PROD
+export const API_HOST = import.meta.env.PROD
   ? "/healthvue-server"
   : "http://localhost:8080";
 

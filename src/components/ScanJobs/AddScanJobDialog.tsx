@@ -86,8 +86,8 @@ export default function AddScanJobDialog({
       <DialogContent className="h-full sm:h-auto sm:max-w-[425px]">
         <form className="flex flex-col gap-3 mt-8 " onSubmit={addJob}>
           <DialogHeader>
-            <DialogTitle>Add Case</DialogTitle>
-            <DialogDescription>Add entry for new Case</DialogDescription>
+            <DialogTitle>Start Scan</DialogTitle>
+            <DialogDescription>Add entry for new Scan</DialogDescription>
           </DialogHeader>
           <div>
             <Label htmlFor="case">Case</Label>
