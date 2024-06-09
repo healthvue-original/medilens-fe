@@ -113,5 +113,15 @@ export function createAPI({ org }: createAPIProps): API {
       fetchAPI,
       resTransformers.addScanJob
     ),
+    getComments: asyncPipe(
+      reqTransformers.getComments,
+      fetchAPI,
+      resTransformers.getComments
+    ),
+    addComment: asyncPipe(
+      reqTransformers.addComment,
+      fetchAPI,
+      resTransformers.addComment
+    ),
   };
 }

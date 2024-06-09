@@ -65,9 +65,9 @@ export const createReqTransformers = ({
       };
     },
 
-    getSpecimens: async () => {
+    getSpecimens: async ({ caseId }) => {
       return {
-        url: constructURL("/specimens"),
+        url: constructURL(`/cases/${caseId}/specimens`),
         method: "GET",
       };
     },
@@ -104,6 +104,26 @@ export const createReqTransformers = ({
         url: constructURL(`/scanners/${scan_job.scanner_id}/jobs`),
         method: "POST",
         body: JSON.stringify(scan_job),
+      };
+    },
+
+    getComments: async ({
+      entity,
+      entity_id,
+    }: {
+      entity: string;
+      entity_id: number;
+    }) => {
+      return {
+        url: constructURL(`/${entity}/${entity_id}/comments`),
+        method: "GET",
+      };
+    },
+    addComment: async ({ entity, entity_id, ...comment }) => {
+      return {
+        url: constructURL(`/${entity}/${entity_id}/comments`),
+        method: "POST",
+        body: JSON.stringify({ entity, entity_id, ...comment }),
       };
     },
   };

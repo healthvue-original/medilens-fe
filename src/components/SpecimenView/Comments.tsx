@@ -1,21 +1,31 @@
+import { CommentModel } from "@/services/api/models";
+
 export default function Comments({
   comments,
+  loading,
   onCommentClick,
 }: {
-  comments: Array<any>;
-  onCommentClick: (comment: any) => void;
+  comments: CommentModel[];
+  loading: boolean;
+  onCommentClick: (comment: CommentModel) => void;
 }): JSX.Element {
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="app-comments">
+    <div className="">
+      <div className=" text-center p-2 border-b-2 border-secondary">Comments</div>
       {comments.map((comment) => (
         <div
-          key={comment.id}
           onClick={() => onCommentClick(comment)}
-          className="app-comment"
+          key={comment.id}
+          className="p-5 border-b-2 border-secondary cursor-pointer"
         >
-          {getCommentText(comment)}
+          {getCommentText(comment.comment)}
         </div>
       ))}
+      {comments.length == 0 && <div>No Comments</div>}
     </div>
   );
 }

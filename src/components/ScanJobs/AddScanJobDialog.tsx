@@ -1,7 +1,6 @@
 import { useRevalidator } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
 import {
   Select,
   SelectContent,
@@ -41,7 +40,7 @@ export default function AddScanJobDialog({
   const revalidator = useRevalidator();
   const api = useAPI();
 
-  const addJob = (e: React.FormEvent) => {
+  const addJob = async (e: React.FormEvent) => {
     e.preventDefault();
     const payload: ScanJobPayload = {
       scanner_id: +scanner_id,
@@ -51,11 +50,19 @@ export default function AddScanJobDialog({
 
     setLoading(true);
 
-    api.addScanJob(payload).then(() => {
-      setLoading(false);
-      revalidator.revalidate();
-      closeDialog();
+    const createdJob = await api.addScanJob(payload);
+
+    await api.addSpecimen({
+      case_id: +case_id,
+      job_id: createdJob.id,
+      file_path: "scans/FDSSD43534GDFX",
+      name: "Dummy",
+      user_id: 1,
     });
+
+    setLoading(false);
+    revalidator.revalidate();
+    closeDialog();
   };
 
   const transformedScanners = scanners.map((p) => ({

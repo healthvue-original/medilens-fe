@@ -1,5 +1,6 @@
 import {
   CaseModel,
+  CommentModel,
   GroupModel,
   HospitalModel,
   PatientModel,
@@ -44,6 +45,8 @@ export type ScannerPayload = Omit<ScannerModel, CommonOmit>;
 
 export type ScanJobPayload = Omit<ScanJobModel, CommonOmit | "status">;
 
+export type CommentPayload = Omit<CommentModel, CommonOmit>;
+
 export type API = {
   getUserData: () => Promise<UserModel>;
 
@@ -64,7 +67,7 @@ export type API = {
   addGroup: (group: GroupPayload) => Promise<GroupModel>;
 
   // specimens
-  getSpecimens: () => Promise<SpecimenModel[]>;
+  getSpecimens: ({ caseId }: { caseId: number }) => Promise<SpecimenModel[]>;
   addSpecimen: (specimen: SpecimenPayload) => Promise<SpecimenModel>;
 
   // scanners
@@ -74,6 +77,16 @@ export type API = {
   // scan_jobs
   getScanJobs: () => Promise<ScanJobModel[]>;
   addScanJob: (job: ScanJobPayload) => Promise<ScanJobModel>;
+
+  // comments
+  getComments: ({
+    entity,
+    entity_id,
+  }: {
+    entity: string;
+    entity_id: number;
+  }) => Promise<CommentModel[]>;
+  addComment: (props: CommentPayload) => Promise<CommentModel>;
 };
 
 export type ObjectType = { [key: string]: any };

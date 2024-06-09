@@ -36,6 +36,9 @@ export type SpecimenModel = {
   id: number;
   name: string;
   file_path: string;
+  user_id: number;
+  case_id: number;
+  job_id: number;
 } & CreatedUpdatedAt;
 
 export type GroupModel = {
@@ -62,6 +65,14 @@ export type ScanJobModel = {
   case_id: number;
   status: string;
   slot_id: number;
+} & CreatedUpdatedAt;
+
+export type CommentModel = {
+  id: number;
+  comment: string;
+  entity_id: number;
+  entity?: string;
+  parent_id: number;
 } & CreatedUpdatedAt;
 
 /*
@@ -146,6 +157,17 @@ export type ScanJobModel = {
         Status    string
         CreatedAt time.Time
         UpdatedAt time.Time
+    }
+
+    type Comment struct {
+      ID        uint
+      comment   string
+      ParentId  int
+      Entity    string
+      EntityId  int
+      Position  string
+      CreatedAt time.Time
+      UpdatedAt time.Time
     }
 
 */

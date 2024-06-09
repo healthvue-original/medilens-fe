@@ -91,7 +91,10 @@ const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
     header: "Actions",
     cell: ({ row }) => (
       <Button size={"sm"} className="p-1 h-max" variant={"link"}>
-        <NavLink className={"text-[12px]"} to={"/scans/3"}>
+        <NavLink
+          className={"text-[12px]"}
+          to={`/cases/${row.original.case_id}/specimens`}
+        >
           View Scan
         </NavLink>
       </Button>

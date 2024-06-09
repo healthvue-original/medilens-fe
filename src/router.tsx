@@ -63,6 +63,13 @@ async function scanJobsLoader() {
   });
 }
 
+async function specimenLoader({ params }: { params: { caseId: number } }) {
+  const specimens = await api.getSpecimens({ caseId: params.caseId });
+  return {
+    specimens,
+  };
+}
+
 export const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App api={api} />}>
@@ -91,6 +98,11 @@ export const router = createBrowserRouter(
         }
       >
         <Route index element={<CasesList />} loader={casesLoader} />
+        <Route
+          path="/cases/:caseId/specimens"
+          loader={specimenLoader}
+          element={<SpecimenView />}
+        />
       </Route>
       <Route
         path="/scans"
@@ -101,7 +113,11 @@ export const router = createBrowserRouter(
         }
       >
         <Route index element={<ScanJobsList />} loader={scanJobsLoader} />
-        <Route path="/scans/:scanId" element={<SpecimenView />} />
+        <Route
+          path="/scans/:scanId"
+          loader={specimenLoader}
+          element={<SpecimenView />}
+        />
       </Route>
       <Route path="/reports" element={<div>Reports</div>} />
       <Route path="/settings" element={<div>Settings</div>} />

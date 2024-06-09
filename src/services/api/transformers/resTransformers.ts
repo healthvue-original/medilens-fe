@@ -1,4 +1,5 @@
 import { waitFor } from "@/lib/utils";
+import { CommentModel } from "../models";
 import { API, ResTransformer, TransformerProps } from "../types";
 
 export const createResTransformers = (
@@ -46,8 +47,8 @@ export const createResTransformers = (
     },
 
     getSpecimens: async (response): Promise<any> => {
-      const data = await response.json();
-      return data?.specimens ?? [];
+      const resp = await response.json();
+      return resp.data?.specimens ?? [];
     },
     addSpecimen: async (response): Promise<any> => {
       const resp = await response.json();
@@ -68,6 +69,21 @@ export const createResTransformers = (
       return resp.data?.jobs ?? [];
     },
     addScanJob: async (response): Promise<any> => {
+      const resp = await response.json();
+      return waitFor(3000, resp);
+    },
+
+    getComments: async (response): Promise<CommentModel[]> => {
+      const resp = await response.json();
+      return (
+        resp.data?.comments?.map((com: CommentModel) => ({
+          ...com,
+          comment: JSON.parse(com.comment),
+        })) ?? []
+      );
+    },
+
+    addComment: async (response): Promise<CommentModel> => {
       const resp = await response.json();
       return waitFor(3000, resp);
     },
