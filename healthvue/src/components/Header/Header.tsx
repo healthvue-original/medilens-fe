@@ -1,6 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeSwitcher } from "../ThemeSwitcher";
-// import { ThemeSwitcher } from "../ThemeSwitcher";
 // import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 // import LeftNav from "../LeftNav";
 
@@ -18,10 +17,10 @@ export default function Header(): JSX.Element {
       </div>
       <div className="flex flex-1 justify-end gap-6">
         <ThemeSwitcher />
-        {/* <Avatar className=" mr-4 cursor-pointer">
+        <Avatar className=" mr-4 cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
-        </Avatar> */}
+        </Avatar>
       </div>
     </div>
   );
