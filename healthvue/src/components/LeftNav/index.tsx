@@ -15,30 +15,30 @@ const navList = [
   {
     label: "Patients",
     id: "patients",
-    href: "patients",
+    href: "/patients",
     Icon: FaUser,
   },
   {
     label: "Cases",
-    href: "cases",
+    href: "/cases",
     id: "cases",
     Icon: FaFileAlt,
   },
   {
     label: "Scans",
-    href: "scans",
+    href: "/scans",
     id: "scans",
     Icon: RiBodyScanFill,
   },
   {
     label: "Reports",
-    href: "reports",
+    href: "/reports",
     id: "reports",
     Icon: FaChartPie,
   },
   {
     label: "Settings",
-    href: "settings",
+    href: "/settings",
     id: "settings",
     Icon: IoMdSettings,
   },
@@ -46,6 +46,7 @@ const navList = [
 
 export default function LeftNav(): JSX.Element {
   const pathname = usePathname();
+
   return (
     <div className=" h-full w-full">
       <ul className="flex flex-col gap-1 border-r h-full">

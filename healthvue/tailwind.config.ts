@@ -18,6 +18,9 @@ const config: Config = {
       },
     },
     extend: {
+      borderColor: {
+        DEFAULT: "hsl(var(--border))",
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },

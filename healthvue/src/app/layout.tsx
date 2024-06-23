@@ -29,10 +29,10 @@ export default function RootLayout({
   const colorScheme = (cookieStore.get("color-scheme")?.value ??
     "dark") as Theme;
   return (
-    <html lang="en" className={colorScheme}>
+    <html lang="en" className={`${colorScheme} h-full`}>
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased h-full",
           fontSans.variable
         )}
       >

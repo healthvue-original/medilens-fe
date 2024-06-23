@@ -697,6 +697,13 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.10.3.tgz#391d528054f758f81e53210f1a1eebcf1a8b1d20"
   integrity sha512-qC/xYId4NMebE6w/V33Fh9gWxLgURiNYgVNObbJl2LZv0GUUItCcCqC5axQSwRaAgaxl2mELq1rMzlswaQ0Zxg==
 
+"@sknk/object-validator@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@sknk/object-validator/-/object-validator-2.0.1.tgz#5d963a25739715ede000a57642f3d97efa3cb5f9"
+  integrity sha512-bfFieM61KoL7bGA+w16/nz5m1R4cLd7TNfUWcOLKFu1am12RN/JtIlu8+WTwaUbUosj5AeWUwnoOdcE4chwbIw==
+  dependencies:
+    tiny-schema "^1.0.0"
+
 "@swc/counter@^0.1.3":
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/@swc/counter/-/counter-0.1.3.tgz#cc7463bd02949611c6329596fccd2b0ec782b0e9"
@@ -709,6 +716,18 @@
   dependencies:
     "@swc/counter" "^0.1.3"
     tslib "^2.4.0"
+
+"@tanstack/react-table@^8.17.3":
+  version "8.17.3"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-table/-/react-table-8.17.3.tgz#4e10b4cf5355a40d6d72a83d3f4b3ecd32f56bf4"
+  integrity sha512-5gwg5SvPD3lNAXPuJJz1fOCEZYk9/GeBFH3w/hCgnfyszOIzwkwgp5I7Q4MJtn0WECp84b5STQUDdmvGi8m3nA==
+  dependencies:
+    "@tanstack/table-core" "8.17.3"
+
+"@tanstack/table-core@8.17.3":
+  version "8.17.3"
+  resolved "https://registry.yarnpkg.com/@tanstack/table-core/-/table-core-8.17.3.tgz#d7a9830abb29cd369b52b2a7159dc0360af646fd"
+  integrity sha512-mPBodDGVL+fl6d90wUREepHa/7lhsghg2A3vFpakEhrhtbIlgNAZiMr7ccTgak5qbHqF14Fwy+W1yFWQt+WmYQ==
 
 "@types/js-cookie@^3.0.6":
   version "3.0.6"
@@ -3157,6 +3176,11 @@ thenify-all@^1.0.0:
   integrity sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==
   dependencies:
     any-promise "^1.0.0"
+
+tiny-schema@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/tiny-schema/-/tiny-schema-1.0.0.tgz#be8eed6a137ccbf7132008680d7bd5bc3e136aa5"
+  integrity sha512-B0xAvYsdhkkFU8gmY0rs6yRFCPXdcAlP5qKm8tQDHYU7VdUefrZLgWmbFHfCv6b2jaNDMVcmbtp2VpLWyQJtyA==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
