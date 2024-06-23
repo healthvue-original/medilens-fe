@@ -11,8 +11,11 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import AddCaseDialog from "./AddCaseDialog";
 import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
+import generateReport from "@/lib/paged-html";
+import { useDialog } from "@/context/DialogProvider";
+import CaseDetail from "./CaseDetail";
 
-const PatientColumnDef: ColumnDef<Case>[] = [
+const CasesColumnDef: ColumnDef<Case>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -76,6 +79,17 @@ const PatientColumnDef: ColumnDef<Case>[] = [
     accessorKey: "created_at",
     header: "Created At",
   },
+  {
+    id: "action",
+    header: "Actions",
+    cell: ({ row }) => {
+      return (
+        <Button variant={"link"} onClick={generateReport}>
+          Generate Report
+        </Button>
+      );
+    },
+  },
 ];
 
 export function CasesTableView({
@@ -90,8 +104,14 @@ export function CasesTableView({
   const [showAddPatientForm, setShowAddPatientForm] = useState(false);
   const tableInstance = useTableMain({
     data: cases,
-    columns: PatientColumnDef,
+    columns: CasesColumnDef,
   });
+
+  const dialog = useDialog();
+
+  const onRowClick = (row) => {
+    dialog.open(<CaseDetail closeDialog={dialog.close} />);
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -110,7 +130,7 @@ export function CasesTableView({
           <GlobalFilter tableInstance={tableInstance} />
         </div>
       </div>
-      <TableMain tableInstance={tableInstance} />
+      <TableMain tableInstance={tableInstance} onRowClick={onRowClick} />
       <Pagination tableInstance={tableInstance} />
     </div>
   );
