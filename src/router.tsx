@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import CasesList from "./components/Cases/CasesList";
+import HospitalsList from "./components/Hospitals/HospitalsList";
 import Home from "./components/Home";
 import PatientsList from "./components/Patients/PatientsList";
 import ScanJobsList from "./components/ScanJobs/ScanJobsList";
@@ -51,6 +52,12 @@ async function casesLoader() {
   return defer({
     cases: api.getCases(),
     patients: api.getPatients(),
+    hospitals: api.getHospitals(),
+  });
+}
+
+async function hospitalLoader() {
+  return defer({
     hospitals: api.getHospitals(),
   });
 }
@@ -120,7 +127,16 @@ export const router = createBrowserRouter(
         />
       </Route>
       <Route path="/reports" element={<div>Reports</div>} />
-      <Route path="/settings" element={<div>Settings</div>} />
+      <Route
+        path="/settings"
+        element={
+          <div className="h-full">
+            <Outlet />
+          </div>
+        }
+      >
+        <Route index element={<HospitalsList />} loader={casesLoader} />
+      </Route>
     </Route>
   ),
   {
