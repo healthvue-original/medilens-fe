@@ -1,5 +1,4 @@
-import Image from "next/image";
-
-export default function Home() {
-  return <main className="">hello</main>;
+export default async function Home() {
+  await new Promise((res, rej) => setTimeout(res, 3000));
+  return <div>Hello</div>;
 }
