@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import PagedHTML, { components, utils } from "paged-html";
 
 const { Paragraph } = components;

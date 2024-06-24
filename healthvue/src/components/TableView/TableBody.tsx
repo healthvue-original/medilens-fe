@@ -11,7 +11,7 @@ import { Table as TableType } from "@tanstack/react-table";
 
 export default function TableMain({
   tableInstance,
-  onRowClick,
+  onRowClick = () => {},
 }: {
   tableInstance: TableType<any>;
   onRowClick?: (row: Row<any>) => void;
@@ -48,7 +48,7 @@ export default function TableMain({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                onClick={onRowClick}
+                onClick={() => onRowClick(row)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

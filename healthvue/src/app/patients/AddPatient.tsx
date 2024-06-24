@@ -18,12 +18,20 @@ const initialFormState = {
   message: "",
 };
 
+type FormErrors = {
+  name?: string;
+  email?: string;
+  age?: string;
+  sex?: string;
+  phone?: string;
+};
+
 export default function AddPatientDialog({
   closeDialog,
 }: {
   closeDialog: () => void;
 }): JSX.Element | null {
-  const formErrors = {};
+  const formErrors: FormErrors = {};
   const [formState, formAction] = useFormState(createPatient, initialFormState);
 
   useEffect(() => {
