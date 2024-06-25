@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { createPatient } from "../actions";
+import { createPatient } from "../../actions";
 import { useFormState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
 

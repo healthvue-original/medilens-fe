@@ -8,7 +8,7 @@ type DialogProviderState = {
 
 const DialogContext = createContext<DialogProviderState | null>(null);
 
-export function DialogProvider({ children }: { children: JSX.Element }) {
+export function DialogProvider({ children }: { children: React.ReactNode }) {
   const [element, setElement] = useState<JSX.Element>(<></>);
   const open = setElement;
   const close = () => setElement(<></>);
