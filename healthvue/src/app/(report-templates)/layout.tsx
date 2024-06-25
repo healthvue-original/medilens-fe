@@ -27,7 +27,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <div id="pdf-container">{children}</div>
+        <div id="pdf-layout">{children}</div>
       </body>
     </html>
   );
