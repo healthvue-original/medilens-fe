@@ -54,7 +54,7 @@ export function SelectPopover({
       </PopoverTrigger>
       <PopoverContentWithoutPortal asChild className="p-0 overflow-scroll">
         <Command>
-          <CommandInput placeholder={placeholder} />
+          <CommandInput placeholder={placeholder}/>
           <CommandEmpty>{emptyMessage}</CommandEmpty>
           <CommandGroup>
             <CommandList className=" overflow-scroll">

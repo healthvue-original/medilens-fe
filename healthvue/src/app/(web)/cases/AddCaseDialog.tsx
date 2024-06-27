@@ -12,9 +12,21 @@ import {
 import { useState } from "react";
 import { HospitalModel, PatientModel } from "@/services/api/models";
 import { SelectPopover } from "@/components/SelectPopover";
-import { useAPI } from "@/context/APIProvider";
-import { CasePayload } from "@/services/api/types";
 import * as React from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { addCase } from "@/app/actions";
+
+const initialFormState = {
+  message: "",
+};
+
+type FormErrors = {
+  name?: string;
+  email?: string;
+  age?: string;
+  sex?: string;
+  phone?: string;
+};
 
 export default function AddCaseDialog({
   closeDialog,
@@ -28,26 +40,15 @@ export default function AddCaseDialog({
   const [loading, setLoading] = useState(false);
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
-  const api = useAPI();
 
-  const addCase = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const payload: CasePayload = {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      patient_id: +patient_id,
-      hospital_id: +hospital_id,
-      created_by: 1,
-    };
+  const formErrors: FormErrors = {};
+  const [formState, formAction] = useFormState(addCase, initialFormState);
 
-    setLoading(true);
-
-    api.addCase(payload).then(() => {
-      setLoading(false);
+  React.useEffect(() => {
+    if (formState.message === "submitted") {
       closeDialog();
-    });
-  };
+    }
+  }, [formState]);
 
   const transformedPatients = patients.map((p) => ({
     ...p,
@@ -64,13 +65,23 @@ export default function AddCaseDialog({
   return (
     <Dialog defaultOpen={true} onOpenChange={closeDialog}>
       <DialogContent className="h-full sm:h-auto sm:max-w-[425px]">
-        <form className="flex flex-col gap-3 mt-8 " onSubmit={addCase}>
+        <form
+          method="post"
+          className="flex flex-col gap-3 mt-8 "
+          action={formAction}
+        >
           <DialogHeader>
             <DialogTitle>Add Case</DialogTitle>
             <DialogDescription>Add entry for new Case</DialogDescription>
           </DialogHeader>
           <div>
-            <Label htmlFor="patient">Patient</Label>
+            <Label htmlFor="patient_id">Patient</Label>
+            <input
+              className="invisible"
+              name="patient_id"
+              id="patient_id"
+              value={patient_id}
+            />
             <div className=" w-full">
               <SelectPopover
                 items={transformedPatients}
@@ -90,7 +101,13 @@ export default function AddCaseDialog({
             <Input id="description" name="description" />
           </div>
           <div>
-            <Label htmlFor="hospital">Hospital</Label>
+            <Label htmlFor="hospital_id">Hospital</Label>
+            <input
+              name="hospital_id"
+              className="invisible"
+              id="hospital_id"
+              value={hospital_id}
+            />
             <div className=" w-full">
               <SelectPopover
                 items={transformedHospitals}
@@ -102,12 +119,20 @@ export default function AddCaseDialog({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" loading={loading} loadingText="Saving...">
-              Save
-            </Button>
+            <SubmitBtn />
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function SubmitBtn(): JSX.Element {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button type="submit" loading={pending} loadingText="Saving..">
+      Save
+    </Button>
   );
 }

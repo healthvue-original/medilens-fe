@@ -1,7 +1,7 @@
 "use client";
 import { FaSort } from "react-icons/fa";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTableMain } from "@/components/TableView/useTable";
 import TableMain from "@/components/TableView/TableBody";
@@ -108,7 +108,7 @@ export function CasesTableView({
 
   const dialog = useDialog();
 
-  const onRowClick = (row) => {
+  const onRowClick = (row: Row<any>) => {
     dialog.open(<CaseDetail closeDialog={dialog.close} />);
   };
 
