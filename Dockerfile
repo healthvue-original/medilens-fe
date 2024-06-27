@@ -1,28 +1,61 @@
-From node:18-alpine as build
-# by default root. we need it run COPY, npm commands
-USER root
-# place we will do rest of the stuffs
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# install package.json first so it get cached
-COPY package*.json yarn.lock ./
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN yarn --frozen-lockfile
 
-# install yarn and then install dependencies
-RUN npm config list
-RUN yarn install --frozen-lockfile
 
-# copy from repo to container and run build
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN BASE_URL=/healthvue/ yarn build
 
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-From node:18-alpine as server
-USER root
+RUN yarn run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
-RUN npm install -g serve
 
-COPY --from=build /app/dist /app
+ENV NODE_ENV production
+ENV BASE_URL=/healthvue/
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-EXPOSE 8080
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-CMD ["serve","-p","8080"]
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/puppeteer ./node_modules/puppeteer
+
+RUN node -e "console.log(require('puppeteer').executablePath())"
+
+USER nextjs
+
+EXPOSE 8000
+
+ENV PORT 8000
+
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+CMD HOSTNAME="0.0.0.0" node server.js
