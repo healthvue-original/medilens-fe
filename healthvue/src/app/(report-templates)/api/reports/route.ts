@@ -1,6 +1,7 @@
 import puppeteer from "puppeteer";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 

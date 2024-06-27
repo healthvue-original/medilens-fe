@@ -8,11 +8,13 @@ import TableMain from "@/components/TableView/TableBody";
 import { Pagination } from "@/components/TableView/Pagination";
 import { GlobalFilter } from "@/components/TableView/GlobalFilter";
 import { Button } from "@/components/ui/button";
-import { PatientModel } from "@/services/api/models";
+import { useState } from "react";
+import AddCaseDialog from "./AddCaseDialog";
+import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
 import { useDialog } from "@/context/DialogProvider";
-import AddPatientDialog from "./AddPatient";
+import CaseDetail from "./CaseDetail";
 
-const PatientColumnDef: ColumnDef<PatientModel>[] = [
+const CasesColumnDef: ColumnDef<CaseModel>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -55,8 +57,8 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
     size: 100,
   },
   {
-    id: "age",
-    accessorKey: "age",
+    id: "description",
+    accessorKey: "description",
     header: ({ column }) => {
       return (
         <Button
@@ -64,56 +66,70 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Age
+          Description
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    size: 64,
+    size: 164,
   },
   {
-    id: "email",
-    accessorKey: "email",
-    header: "Email",
-    filterFn: "fuzzy",
+    id: "created_at",
+    accessorKey: "created_at",
+    header: "Created At",
   },
   {
-    id: "sex",
-    accessorKey: "sex",
-    header: "Gender",
-  },
-  {
-    id: "phone",
-    accessorKey: "phone",
-    header: "Phone",
+    id: "action",
+    header: "Actions",
+    cell: ({ row }) => {
+      return (
+        <Button variant={"link"} onClick={() => {}}>
+          Generate Report
+        </Button>
+      );
+    },
   },
 ];
 
-export function PatientTableView({
-  data,
+export function CasesTableView({
+  cases,
+  patients,
+  hospitals,
 }: {
-  data: PatientModel[];
+  cases: CaseModel[];
+  patients: PatientModel[];
+  hospitals: HospitalModel[];
 }): JSX.Element {
+  const [showAddPatientForm, setShowAddPatientForm] = useState(false);
+  const tableInstance = useTableMain({
+    data: cases,
+    columns: CasesColumnDef,
+  });
+
   const dialog = useDialog();
-  const tableInstance = useTableMain({ data, columns: PatientColumnDef });
+
+  const onRowClick = (row) => {
+    dialog.open(<CaseDetail closeDialog={dialog.close} />);
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button
-            onClick={() =>
-              dialog.open(<AddPatientDialog closeDialog={dialog.close} />)
-            }
-          >
-            Add Patient
-          </Button>
+          <Button onClick={() => setShowAddPatientForm(true)}>Add Case</Button>
+          {showAddPatientForm && (
+            <AddCaseDialog
+              closeDialog={() => setShowAddPatientForm(false)}
+              patients={patients}
+              hospitals={hospitals}
+            />
+          )}
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />
         </div>
       </div>
-      <TableMain tableInstance={tableInstance} />
+      <TableMain tableInstance={tableInstance} onRowClick={onRowClick} />
       <Pagination tableInstance={tableInstance} />
     </div>
   );

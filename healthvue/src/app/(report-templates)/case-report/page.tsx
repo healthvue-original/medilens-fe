@@ -17,7 +17,7 @@ export default function CaseReport() {
   return <div id="pdf-container"></div>;
 }
 
-export async function generateReport({
+async function generateReport({
   container,
   api,
 }: {
@@ -61,4 +61,5 @@ export async function generateReport({
   );
 
   document.body.appendChild(markEndEl);
+  window.print();
 }

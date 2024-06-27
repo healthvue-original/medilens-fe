@@ -1,7 +1,7 @@
 import { AsyncTask, ObjectType } from "./types";
 
 export const API_HOST =
-  process.env.STAGE === "production"
+  process.env.NODE_ENV === "production"
     ? "/healthvue-server"
     : "http://localhost:8080";
 

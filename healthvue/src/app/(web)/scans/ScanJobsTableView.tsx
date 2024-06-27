@@ -1,4 +1,5 @@
 "use client";
+
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -8,11 +9,12 @@ import TableMain from "@/components/TableView/TableBody";
 import { Pagination } from "@/components/TableView/Pagination";
 import { GlobalFilter } from "@/components/TableView/GlobalFilter";
 import { Button } from "@/components/ui/button";
-import { PatientModel } from "@/services/api/models";
-import { useDialog } from "@/context/DialogProvider";
-import AddPatientDialog from "./AddPatient";
+import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
+import AddScanJobDialog from "./AddScanJobDialog";
+import { useState } from "react";
+import Link from "next/link";
 
-const PatientColumnDef: ColumnDef<PatientModel>[] = [
+const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -37,8 +39,8 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
     size: 48,
   },
   {
-    id: "name",
-    accessorKey: "name",
+    id: "scanner_id",
+    accessorKey: "scanner_id",
     filterFn: "fuzzy",
     header: ({ column }) => {
       return (
@@ -47,7 +49,7 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Name
+          Scanner Id
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -55,8 +57,8 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
     size: 100,
   },
   {
-    id: "age",
-    accessorKey: "age",
+    id: "case_id",
+    accessorKey: "case_id",
     header: ({ column }) => {
       return (
         <Button
@@ -64,50 +66,74 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
           className="p-0"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Age
+          Case Id
           <FaSort className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    size: 64,
+    size: 164,
   },
   {
-    id: "email",
-    accessorKey: "email",
-    header: "Email",
-    filterFn: "fuzzy",
+    id: "slot_id",
+    accessorKey: "slot_id",
+    header: "Slot Id",
   },
   {
-    id: "sex",
-    accessorKey: "sex",
-    header: "Gender",
+    id: "status",
+    accessorKey: "status",
+    header: "Status",
   },
   {
-    id: "phone",
-    accessorKey: "phone",
-    header: "Phone",
+    id: "created_at",
+    accessorKey: "created_at",
+    header: "Created At",
+  },
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <Button size={"sm"} className="p-1 h-max" variant={"link"}>
+        <Link
+          className={"text-[12px]"}
+          href={`/cases/${row.original.case_id}/specimens`}
+        >
+          View Scan
+        </Link>
+      </Button>
+    ),
   },
 ];
 
-export function PatientTableView({
-  data,
+export function ScanJobsTableView({
+  scanJobs,
+  scanners,
+  cases,
 }: {
-  data: PatientModel[];
+  scanJobs: ScanJobModel[];
+  cases: CaseModel[];
+  scanners: ScannerModel[];
 }): JSX.Element {
-  const dialog = useDialog();
-  const tableInstance = useTableMain({ data, columns: PatientColumnDef });
+  const [showAddJobForm, setShowAddJobForm] = useState(false);
+
+  const tableInstance = useTableMain({
+    data: scanJobs,
+    columns: PatientColumnDef,
+  });
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button
-            onClick={() =>
-              dialog.open(<AddPatientDialog closeDialog={dialog.close} />)
-            }
-          >
-            Add Patient
+          <Button onClick={() => setShowAddJobForm(true)}>
+            Start New Scan
           </Button>
+          {showAddJobForm && (
+            <AddScanJobDialog
+              closeDialog={() => setShowAddJobForm(false)}
+              scanners={scanners}
+              cases={cases}
+            />
+          )}
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />

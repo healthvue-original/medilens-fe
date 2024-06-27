@@ -1,14 +1,18 @@
 import { createAPI } from "@/services/api";
-import { PatientTableView } from "./PatientTableView";
+import { CasesTableView } from "./CasesTableView";
 
 const api = createAPI({ org: "healthvue" });
 
 export default async function PatientsPage() {
-  const patients = await api.getPatients();
+  const [cases, patients, hospitals] = await Promise.all([
+    api.getCases(),
+    api.getPatients(),
+    api.getHospitals(),
+  ]);
 
   return (
     <div className="p-8 h-full flex flex-col">
-      <PatientTableView data={patients} />
+      <CasesTableView cases={cases} patients={patients} hospitals={hospitals} />
     </div>
   );
 }

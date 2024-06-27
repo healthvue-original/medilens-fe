@@ -9,7 +9,7 @@ const navList = [
   {
     label: "Home",
     id: "home",
-    href: "/",
+    href: "/dashboard",
     Icon: FaHome,
   },
   {
