@@ -13,7 +13,7 @@ import {
 type ConstructURL = { constructURL: (url: string) => string };
 
 export type createAPIProps = {
-  org: string;
+  org?: string;
 };
 
 export type TransformerProps = {

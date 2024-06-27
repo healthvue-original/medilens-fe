@@ -3,7 +3,7 @@ import { createResTransformers } from "./transformers/resTransformers";
 import { API, createAPIProps, FetchOptions } from "./types";
 import { asyncPipe, constructURL, deepMerge } from "./utils";
 
-export function createAPI({ org }: createAPIProps): API {
+export function createAPI({ org = "healthvue" }: createAPIProps): API {
   const defaultFetchOptions = {
     method: "POST",
     headers: {
