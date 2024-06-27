@@ -78,17 +78,17 @@ const CasesColumnDef: ColumnDef<CaseModel>[] = [
     accessorKey: "created_at",
     header: "Created At",
   },
-  {
-    id: "action",
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <Button variant={"link"} onClick={() => {}}>
-          Generate Report
-        </Button>
-      );
-    },
-  },
+  // {
+  //   id: "action",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Button variant={"link"} onClick={() => {}}>
+  //         Generate Report
+  //       </Button>
+  //     );
+  //   },
+  // },
 ];
 
 export function CasesTableView({
