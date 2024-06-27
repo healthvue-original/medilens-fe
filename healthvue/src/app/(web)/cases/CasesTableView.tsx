@@ -16,7 +16,8 @@ import CaseDetail from "./CaseDetail";
 
 const CasesColumnDef: ColumnDef<CaseModel>[] = [
   {
-    id: "select",
+    id: "id",
+    accessorKey: "id",
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -78,17 +79,23 @@ const CasesColumnDef: ColumnDef<CaseModel>[] = [
     accessorKey: "created_at",
     header: "Created At",
   },
-  // {
-  //   id: "action",
-  //   header: "Actions",
-  //   cell: ({ row }) => {
-  //     return (
-  //       <Button variant={"link"} onClick={() => {}}>
-  //         Generate Report
-  //       </Button>
-  //     );
-  //   },
-  // },
+  {
+    id: "action",
+    header: "Actions",
+    cell: ({ row }) => {
+      return (
+        <Button
+          variant={"link"}
+          onClick={(e) => {
+            e.stopPropagation();
+            window.open("/case-report");
+          }}
+        >
+          Generate Report
+        </Button>
+      );
+    },
+  },
 ];
 
 export function CasesTableView({
@@ -108,8 +115,14 @@ export function CasesTableView({
 
   const dialog = useDialog();
 
-  const onRowClick = (row: Row<any>) => {
-    dialog.open(<CaseDetail closeDialog={dialog.close} />);
+  const onRowClick = (row: Row<CaseModel>) => {
+    const caseId = row.getValue("id");
+    dialog.open(
+      <CaseDetail
+        caseObj={cases.find((c) => c.id === caseId)}
+        closeDialog={dialog.close}
+      />
+    );
   };
 
   return (
