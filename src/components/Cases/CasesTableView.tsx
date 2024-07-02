@@ -1,23 +1,22 @@
 import { Case } from "./types";
 import { FaSort } from "react-icons/fa";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { Checkbox } from "../ui/checkbox";
 import { useTableMain } from "../TableView/useTable";
 import TableMain from "../TableView/TableBody";
 import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
-import { useState } from "react";
 import AddCaseDialog from "./AddCaseDialog";
 import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
-import generateReport from "@/lib/paged-html";
 import { useDialog } from "@/context/DialogProvider";
 import CaseDetail from "./CaseDetail";
 
 const CasesColumnDef: ColumnDef<Case>[] = [
   {
-    id: "select",
+    id: "id",
+    accessorKey: "id",
     header: ({ table }) => (
       <Checkbox
         checked={
@@ -79,17 +78,17 @@ const CasesColumnDef: ColumnDef<Case>[] = [
     accessorKey: "created_at",
     header: "Created At",
   },
-  {
-    id: "action",
-    header: "Actions",
-    cell: ({ row }) => {
-      return (
-        <Button variant={"link"} onClick={generateReport}>
-          Generate Report
-        </Button>
-      );
-    },
-  },
+  // {
+  //   id: "action",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     return (
+  //       <Button variant={"link"} onClick={generateReport}>
+  //         Generate Report
+  //       </Button>
+  //     );
+  //   },
+  // },
 ];
 
 export function CasesTableView({
@@ -101,30 +100,40 @@ export function CasesTableView({
   patients: PatientModel[];
   hospitals: HospitalModel[];
 }): JSX.Element {
-  const [showAddPatientForm, setShowAddPatientForm] = useState(false);
+  const dialog = useDialog();
+
   const tableInstance = useTableMain({
     data: cases,
     columns: CasesColumnDef,
   });
 
-  const dialog = useDialog();
+  const openAddCaseForm = () => {
+    dialog.open(
+      <AddCaseDialog
+        patients={patients}
+        hospitals={hospitals}
+        closeDialog={dialog.close}
+      />
+    );
+  };
 
-  const onRowClick = (row) => {
-    dialog.open(<CaseDetail closeDialog={dialog.close} />);
+  const onRowClick = (row: Row<CaseModel>) => {
+    const caseId = row.getValue("id");
+    console.log(caseId);
+
+    dialog.open(
+      <CaseDetail
+        caseObj={cases.find((c) => c.id === caseId)}
+        closeDialog={dialog.close}
+      />
+    );
   };
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={() => setShowAddPatientForm(true)}>Add Case</Button>
-          {showAddPatientForm && (
-            <AddCaseDialog
-              closeDialog={() => setShowAddPatientForm(false)}
-              patients={patients}
-              hospitals={hospitals}
-            />
-          )}
+          <Button onClick={openAddCaseForm}>Add Case</Button>
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />

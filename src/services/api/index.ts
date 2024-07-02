@@ -31,6 +31,11 @@ export function createAPI({ org }: createAPIProps): API {
     return fetch(url, mergedFetchOptions);
   }
   return {
+    isAuthenticated: asyncPipe(
+      reqTransformers.isAuthenticated,
+      fetchAPI,
+      resTransformers.isAuthenticated
+    ),
     getUserData: asyncPipe(
       reqTransformers.getUserData,
       fetchAPI,
@@ -57,6 +62,11 @@ export function createAPI({ org }: createAPIProps): API {
       reqTransformers.addCase,
       fetchAPI,
       resTransformers.addCase
+    ),
+    updateCase: asyncPipe(
+      reqTransformers.updateCase,
+      fetchAPI,
+      resTransformers.updateCase
     ),
 
     getHospitals: asyncPipe(
@@ -125,3 +135,5 @@ export function createAPI({ org }: createAPIProps): API {
     ),
   };
 }
+
+export const api = createAPI({ org: "healthvue" });

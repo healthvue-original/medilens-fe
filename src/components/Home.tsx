@@ -1,16 +1,8 @@
-import { Suspense } from "react";
-import { Await, useLoaderData } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "./ui/card";
 import ChartWrapper from "./ui/chart";
 
 export default function Home(): JSX.Element {
-  // const { data } = useLoaderData() as { data: string };
   return (
-    // <Suspense fallback={<div>Loading...</div>}>
-    //   <Await resolve={data}>
-    //     {(resolvedData) => <div>{`${JSON.stringify(resolvedData)}`}</div>}
-    //   </Await>
-    // </Suspense>
     <div className="flex flex-col gap-6 p-4 sm:p-6 ">
       <div className="flex flex-row flex-wrap">
         <SampleCountCard title="Patients" />

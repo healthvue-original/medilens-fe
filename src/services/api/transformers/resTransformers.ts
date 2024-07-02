@@ -6,13 +6,17 @@ export const createResTransformers = (
   props: TransformerProps
 ): Record<keyof API, ResTransformer<Response, any>> => {
   return {
+    isAuthenticated: async (response): Promise<any> => {
+      const resp = true;
+      return resp;
+    },
     getUserData: async (response): Promise<any> => {
       const resp = { id: 1, name: "Navin" };
-      return waitFor(3000, resp);
+      return waitFor(100, resp);
     },
     getPatients: async (response): Promise<any> => {
       const data = await response.json();
-      return data.patients ?? [];
+      return waitFor(1000, data.patients ?? []);
     },
     addPatient: async (response): Promise<any> => {
       const resp = await response.json();
@@ -24,6 +28,10 @@ export const createResTransformers = (
       return resp?.data.cases ?? [];
     },
     addCase: async (response): Promise<any> => {
+      const resp = await response.json();
+      return waitFor(3000, resp);
+    },
+    updateCase: async (response): Promise<any> => {
       const resp = await response.json();
       return waitFor(3000, resp);
     },

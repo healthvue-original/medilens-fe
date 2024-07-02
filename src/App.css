@@ -7,3 +7,48 @@ body,
 .mobile-menu button {
   display: none;
 }
+
+.loader {
+  height: 2px;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  background-color: hsl(var(--primary));
+}
+
+.slider {
+  height: 100%;
+  position: absolute;
+  background-color: hsl(var(--primary-foreground));
+  width: 100px;
+  animation: loading 2s linear infinite;
+}
+
+.loader div:nth-of-type(2) {
+  animation-delay: 0.5s;
+}
+
+.loader div:nth-of-type(3) {
+  animation-delay: 1s;
+}
+
+@keyframes loading {
+  0% {
+    left: 0;
+    width: 0;
+  }
+
+  50% {
+    left: 50%;
+    width: 50px;
+  }
+
+  100% {
+    left: calc(100% - 50px);
+    width: 0px;
+  }
+}
+
+.cases tbody tr {
+  cursor: pointer;
+}

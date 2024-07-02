@@ -30,6 +30,10 @@ export type CaseModel = {
   patient_id: number;
   hospital_id?: number;
   status: string;
+  patient?: PatientModel;
+  hospital?: HospitalModel;
+  user?: UserModel;
+  result: string;
 } & CreatedUpdatedAt;
 
 export type SpecimenModel = {
