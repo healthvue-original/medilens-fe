@@ -5,9 +5,15 @@ import "@recogito/annotorious-openseadragon/dist/annotorious.min.css";
 import { useAPI } from "@/context/APIProvider";
 import { CommentModel, SpecimenModel } from "@/services/api/models";
 import { API_HOST } from "@/services/api/utils";
-import CustomWidget from "./CustomWidget";
 
 const baseURL = import.meta.env.BASE_URL;
+const isProduction = import.meta.env.PROD;
+
+const getTileSource = (currentSpecimen: SpecimenModel): string => {
+  return isProduction
+    ? `${API_HOST}/cases/${currentSpecimen.case_id}/specimens/${currentSpecimen.id}/dzi?key=sample-specimen.dzi.dzi`
+    : "http://localhost:8081/output/sample-specimen.dzi";
+};
 
 export default function useEditor({
   containerId = "osd-container",
@@ -79,9 +85,7 @@ export default function useEditor({
     const osdViewer = OpenSeadragon({
       id: containerId,
       prefixUrl: `${baseURL}osd/images/`,
-      tileSources: "http://localhost:8081/output/sample-specimen.dzi",
-      // `${API_HOST}/cases/${currentSpecimen.case_id}/specimens/${currentSpecimen.id}/dzi?key=sample-specimen.dzi.dzi` ??
-      // currentSpecimen.file_path,
+      tileSources: getTileSource(currentSpecimen),
       maxZoomLevel: 500,
     });
     setViewer(osdViewer);

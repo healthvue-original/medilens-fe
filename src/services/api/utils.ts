@@ -1,7 +1,7 @@
 import { AsyncTask, ObjectType } from "./types";
 
 export const API_HOST = import.meta.env.PROD
-  ? "/healthvue-server"
+  ? "https://gently-concise-dogfish.ngrok-free.app/healthvue-server"
   : "http://localhost:8080";
 
 export const constructURL = (url: string): string => {
