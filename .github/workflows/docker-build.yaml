@@ -2,13 +2,8 @@ name: Docker build and publish
 
 on:
   workflow_dispatch:
-    inputs:
-      dockerpush:
-        description: can push to docker hub?
-        type: boolean
-        default: true
   push:
-    branches : [master]
+    branches: [master]
 
 env:
   namespace: healthvue
@@ -33,9 +28,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          push: ${{ inputs.dockerpush }}
+          push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ vars.DOCKERHUB_USERNAME}}/healthvue:${{ github.sha }}
+          tags: ${{ env.tag }}
 
       - name: Install kubectl
         uses: tale/kubectl-action@v1
