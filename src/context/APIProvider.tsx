@@ -1,5 +1,4 @@
 import { createContext, useContext } from "react";
-import { createAPI } from "@/services/api";
 import { API } from "@/services/api/types";
 
 const APIProviderContext = createContext<API | null>(null);

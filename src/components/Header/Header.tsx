@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import LeftNav from "../LeftNav";
 import { useState } from "react";
 

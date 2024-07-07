@@ -1,5 +1,4 @@
 import { SpecimenModel } from "@/services/api/models";
-import { useLoaderData } from "react-router";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -11,11 +10,11 @@ import {
 import Comments from "./Comments";
 import useEditor from "./useEditor";
 
-export default function SpecimenView(): JSX.Element {
-  const { specimens } = useLoaderData() as {
-    specimens: SpecimenModel[];
-  };
-
+export default function SpecimenView({
+  specimens,
+}: {
+  specimens: SpecimenModel[];
+}): JSX.Element {
   const {
     commentLoading,
     comments,

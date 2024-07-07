@@ -1,4 +1,3 @@
-import { Patient } from "./types";
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,8 +9,10 @@ import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import AddPatientDialog from "./AddPatient";
+import { PatientModel } from "@/services/api/models";
+import { useDialog } from "@/context/DialogProvider";
 
-const PatientColumnDef: ColumnDef<Patient>[] = [
+const PatientColumnDef: ColumnDef<PatientModel>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -88,20 +89,26 @@ const PatientColumnDef: ColumnDef<Patient>[] = [
   },
 ];
 
-export function PatientTableView({ data }: { data: Patient[] }): JSX.Element {
-  const [showAddPatientForm, setShowAddPatientForm] = useState(false);
-  const tableInstance = useTableMain({ data, columns: PatientColumnDef });
+export function PatientTableView({
+  patients,
+}: {
+  patients: PatientModel[];
+}): JSX.Element {
+  const dialog = useDialog();
+  const tableInstance = useTableMain({
+    data: patients,
+    columns: PatientColumnDef,
+  });
+
+  const showPatientsForm = () => {
+    dialog.open(<AddPatientDialog onClose={dialog.close} />);
+  };
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={() => setShowAddPatientForm(true)}>
-            Add Patient
-          </Button>
-          {showAddPatientForm && (
-            <AddPatientDialog onClose={() => setShowAddPatientForm(false)} />
-          )}
+          <Button onClick={showPatientsForm}>Add Patient</Button>
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />

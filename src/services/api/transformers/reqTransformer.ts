@@ -4,6 +4,12 @@ export const createReqTransformers = ({
   constructURL,
 }: TransformerProps): Record<keyof API, ReqTransformer<any>> => {
   return {
+    isAuthenticated: async () => {
+      return {
+        url: constructURL("/session"),
+        method: "GET",
+      };
+    },
     getUserData: async () => {
       return {
         url: constructURL("/user"),
@@ -33,6 +39,13 @@ export const createReqTransformers = ({
       return {
         url: constructURL("/cases"),
         method: "POST",
+        body: JSON.stringify(caseObj),
+      };
+    },
+    updateCase: async (caseObj) => {
+      return {
+        url: constructURL(`/cases/${caseObj.id}`),
+        method: "PUT",
         body: JSON.stringify(caseObj),
       };
     },

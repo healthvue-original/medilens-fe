@@ -1,4 +1,4 @@
-import { useRevalidator } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "../ui/input";
@@ -17,6 +17,7 @@ import { SelectPopover } from "../SelectPopover";
 import { useAPI } from "@/context/APIProvider";
 import { CasePayload } from "@/services/api/types";
 import * as React from "react";
+import { FormResponse } from "@/routes/types";
 
 export default function AddCaseDialog({
   closeDialog,
@@ -27,31 +28,21 @@ export default function AddCaseDialog({
   patients: PatientModel[];
   hospitals: HospitalModel[];
 }): JSX.Element | null {
-  const [loading, setLoading] = useState(false);
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
-  const revalidator = useRevalidator();
-  const api = useAPI();
 
-  const addCase = (e: React.FormEvent) => {
-    e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
-    const payload: CasePayload = {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      patient_id: +patient_id,
-      hospital_id: +hospital_id,
-      created_by: 1,
-    };
+  const fetcher = useFetcher<FormResponse<CasePayload>>();
 
-    setLoading(true);
+  const state = fetcher.state;
+  const { success, formErrors } = fetcher.data ?? {};
 
-    api.addCase(payload).then(() => {
-      setLoading(false);
-      revalidator.revalidate();
+  const loading = state === "submitting";
+
+  React.useEffect(() => {
+    if (success) {
       closeDialog();
-    });
-  };
+    }
+  }, [success]);
 
   const transformedPatients = patients.map((p) => ({
     ...p,
@@ -68,13 +59,23 @@ export default function AddCaseDialog({
   return (
     <Dialog defaultOpen={true} onOpenChange={closeDialog}>
       <DialogContent className="h-full sm:h-auto sm:max-w-[425px]">
-        <form className="flex flex-col gap-3 mt-8 " onSubmit={addCase}>
+        <fetcher.Form
+          method="POST"
+          action="/cases"
+          className="flex flex-col gap-3 mt-8 "
+        >
           <DialogHeader>
             <DialogTitle>Add Case</DialogTitle>
             <DialogDescription>Add entry for new Case</DialogDescription>
           </DialogHeader>
           <div>
-            <Label htmlFor="patient">Patient</Label>
+            <Label htmlFor="patient_id">Patient</Label>
+            <input
+              className="invisible"
+              name="patient_id"
+              id="patient_id"
+              value={patient_id}
+            />
             <div className=" w-full">
               <SelectPopover
                 items={transformedPatients}
@@ -94,7 +95,13 @@ export default function AddCaseDialog({
             <Input id="description" name="description" />
           </div>
           <div>
-            <Label htmlFor="hospital">Hospital</Label>
+            <Label htmlFor="hospital_id">Hospital</Label>
+            <input
+              name="hospital_id"
+              className="invisible"
+              id="hospital_id"
+              value={hospital_id}
+            />
             <div className=" w-full">
               <SelectPopover
                 items={transformedHospitals}
@@ -110,7 +117,7 @@ export default function AddCaseDialog({
               Save
             </Button>
           </DialogFooter>
-        </form>
+        </fetcher.Form>
       </DialogContent>
     </Dialog>
   );

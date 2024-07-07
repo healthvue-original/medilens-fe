@@ -33,7 +33,7 @@ export type CommonOmit = "id" | "created_at" | "updated_at";
 
 export type PatientPayload = Omit<PatientModel, CommonOmit>;
 
-export type CasePayload = Omit<CaseModel, CommonOmit | "status">;
+export type CasePayload = Omit<CaseModel, CommonOmit | "status" | "result">;
 
 export type HospitalPayload = Omit<HospitalModel, CommonOmit>;
 
@@ -48,6 +48,7 @@ export type ScanJobPayload = Omit<ScanJobModel, CommonOmit | "status">;
 export type CommentPayload = Omit<CommentModel, CommonOmit>;
 
 export type API = {
+  isAuthenticated: () => Promise<boolean>;
   getUserData: () => Promise<UserModel>;
 
   // patients
@@ -57,6 +58,7 @@ export type API = {
   // cases
   getCases: () => Promise<CaseModel[]>;
   addCase: (caseObj: CasePayload) => Promise<CaseModel>;
+  updateCase: (caseObj: CaseModel) => Promise<CaseModel>;
 
   // hospitals
   getHospitals: () => Promise<HospitalModel[]>;

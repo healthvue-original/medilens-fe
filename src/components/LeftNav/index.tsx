@@ -28,12 +28,12 @@ const navList = [
     id: "scans",
     Icon: RiBodyScanFill,
   },
-  {
-    label: "Reports",
-    href: "reports",
-    id: "reports",
-    Icon: FaChartPie,
-  },
+  // {
+  //   label: "Reports",
+  //   href: "reports",
+  //   id: "reports",
+  //   Icon: FaChartPie,
+  // },
   {
     label: "Settings",
     href: "settings",

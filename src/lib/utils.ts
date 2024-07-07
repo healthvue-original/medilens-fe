@@ -10,3 +10,9 @@ export function waitFor(delay: number = 2000, data: any): Promise<any> {
     setTimeout(() => res(data), delay);
   });
 }
+
+export const dateFormatter = new Intl.DateTimeFormat("en-IN");
+
+export const updatePageTitle = (title) => {
+  document.title = title;
+};

@@ -9,8 +9,8 @@ import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
 import AddScanJobDialog from "./AddScanJobDialog";
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useDialog } from "@/context/DialogProvider";
 
 const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
   {
@@ -111,7 +111,17 @@ export function ScanJobsTableView({
   cases: CaseModel[];
   scanners: ScannerModel[];
 }): JSX.Element {
-  const [showAddJobForm, setShowAddJobForm] = useState(false);
+  const dialog = useDialog();
+
+  const showAddJobForm = () => {
+    dialog.open(
+      <AddScanJobDialog
+        closeDialog={dialog.close}
+        scanners={scanners}
+        cases={cases}
+      />
+    );
+  };
 
   const tableInstance = useTableMain({
     data: scanJobs,
@@ -122,16 +132,7 @@ export function ScanJobsTableView({
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={() => setShowAddJobForm(true)}>
-            Start New Scan
-          </Button>
-          {showAddJobForm && (
-            <AddScanJobDialog
-              closeDialog={() => setShowAddJobForm(false)}
-              scanners={scanners}
-              cases={cases}
-            />
-          )}
+          <Button onClick={showAddJobForm}>Start New Scan</Button>
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />

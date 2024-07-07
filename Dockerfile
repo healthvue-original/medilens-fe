@@ -1,28 +1,24 @@
-From node:18-alpine as build
-# by default root. we need it run COPY, npm commands
+FROM node:18-alpine AS base
+
+FROM base AS deps
 USER root
-# place we will do rest of the stuffs
 WORKDIR /app
-
-# install package.json first so it get cached
 COPY package*.json yarn.lock ./
+RUN yarn install --frozen-lockfile --network-timeout 100000
 
-# install yarn and then install dependencies
-RUN npm config list
-RUN yarn install --frozen-lockfile
-
-# copy from repo to container and run build
+FROM base AS build
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN BASE_URL=/healthvue/ yarn build
+ENV BASE_URL=/healthvue
+RUN yarn run build
 
 
-From node:18-alpine as server
+FROM base AS server
 USER root
 WORKDIR /app
 RUN npm install -g serve
-
 COPY --from=build /app/dist /app
 
 EXPOSE 8080
-
 CMD ["serve","-p","8080"]
