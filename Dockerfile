@@ -1,4 +1,4 @@
-FROM node:18-alpine as base
+FROM node:18-alpine AS base
 
 FROM base AS deps
 USER root
@@ -14,7 +14,7 @@ ENV BASE_URL=/healthvue
 RUN yarn run build
 
 
-FROM base as server
+FROM base AS server
 USER root
 WORKDIR /app
 RUN npm install -g serve
