@@ -2,6 +2,11 @@ name: Docker build and publish
 
 on: push
 
+env:
+  namespace: healthvue
+  deployment: healthvue
+  tag: ${{ vars.DOCKERHUB_USERNAME}}/healthvue:${{ github.sha }}
+
 jobs:
   docker-build:
     runs-on: ubuntu-latest
@@ -28,8 +33,6 @@ jobs:
         uses: tale/kubectl-action@v1
         with:
           base64-kube-config: ${{ secrets.KUBE_CONFIG }}
-      
-      - name: Update image
-        run: kubectl get pods
-      
 
+      - name: Update image
+        run: kubectl set image deployment/${{ env.deployment }} ${{ env.deployment }}=${{ env.tag }} -n ${{ env.namespace }}
