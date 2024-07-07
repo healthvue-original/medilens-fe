@@ -45,3 +45,5 @@ export const deepMerge = (
     return destAcc;
   }, dest);
 };
+
+export const redirectTo = (path: string) => window.location.replace(path);

@@ -133,7 +133,9 @@ export function CasesTableView({
     <div className="w-full h-full flex flex-col">
       <div className="flex items-center">
         <div>
-          <Button onClick={openAddCaseForm}>Add Case</Button>
+          <Button size={"sm"} onClick={openAddCaseForm}>
+            Add Case
+          </Button>
         </div>
         <div className="flex-1">
           <GlobalFilter tableInstance={tableInstance} />

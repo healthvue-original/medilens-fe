@@ -1,4 +1,3 @@
-import { waitFor } from "@/lib/utils";
 import { CommentModel } from "../models";
 import { API, ResTransformer, TransformerProps } from "../types";
 
@@ -12,15 +11,15 @@ export const createResTransformers = (
     },
     getUserData: async (response): Promise<any> => {
       const resp = { id: 1, name: "Navin" };
-      return waitFor(100, resp);
+      return resp;
     },
     getPatients: async (response): Promise<any> => {
       const data = await response.json();
-      return waitFor(1000, data.patients ?? []);
+      return data.patients ?? [];
     },
     addPatient: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getCases: async (response): Promise<any> => {
@@ -29,11 +28,11 @@ export const createResTransformers = (
     },
     addCase: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
     updateCase: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getHospitals: async (response): Promise<any> => {
@@ -42,7 +41,7 @@ export const createResTransformers = (
     },
     addHospital: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getGroups: async (response): Promise<any> => {
@@ -51,7 +50,7 @@ export const createResTransformers = (
     },
     addGroup: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getSpecimens: async (response): Promise<any> => {
@@ -60,7 +59,7 @@ export const createResTransformers = (
     },
     addSpecimen: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getScanners: async (response): Promise<any> => {
@@ -69,7 +68,7 @@ export const createResTransformers = (
     },
     addScanner: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getScanJobs: async (response): Promise<any> => {
@@ -78,7 +77,7 @@ export const createResTransformers = (
     },
     addScanJob: async (response): Promise<any> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
 
     getComments: async (response): Promise<CommentModel[]> => {
@@ -93,7 +92,7 @@ export const createResTransformers = (
 
     addComment: async (response): Promise<CommentModel> => {
       const resp = await response.json();
-      return waitFor(3000, resp);
+      return resp;
     },
   };
 };

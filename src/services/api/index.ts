@@ -1,7 +1,7 @@
 import { createReqTransformers } from "./transformers/reqTransformer";
 import { createResTransformers } from "./transformers/resTransformers";
-import { API, createAPIProps, FetchOptions } from "./types";
-import { asyncPipe, constructURL, deepMerge } from "./utils";
+import { API, createAPIProps, FetchOptions, ResTransformer } from "./types";
+import { asyncPipe, constructURL, deepMerge, redirectTo } from "./utils";
 
 export function createAPI({ org }: createAPIProps): API {
   const defaultFetchOptions = {
@@ -30,6 +30,18 @@ export function createAPI({ org }: createAPIProps): API {
     const mergedFetchOptions = deepMerge({}, defaultFetchOptions, userOptions);
     return fetch(url, mergedFetchOptions);
   }
+
+  const withAuth =
+    (next: ResTransformer<Response, any>) =>
+    (response: Response): Promise<Response> => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          redirectTo("/auth");
+        }
+      }
+      return next(response);
+    };
+
   return {
     isAuthenticated: asyncPipe(
       reqTransformers.isAuthenticated,
@@ -39,45 +51,45 @@ export function createAPI({ org }: createAPIProps): API {
     getUserData: asyncPipe(
       reqTransformers.getUserData,
       fetchAPI,
-      resTransformers.getUserData
+      withAuth(resTransformers.getUserData)
     ),
 
     getPatients: asyncPipe(
       reqTransformers.getPatients,
       fetchAPI,
-      resTransformers.getPatients
+      withAuth(resTransformers.getPatients)
     ),
     addPatient: asyncPipe(
       reqTransformers.addPatient,
       fetchAPI,
-      resTransformers.addPatient
+      withAuth(resTransformers.addPatient)
     ),
 
     getCases: asyncPipe(
       reqTransformers.getCases,
       fetchAPI,
-      resTransformers.getCases
+      withAuth(resTransformers.getCases)
     ),
     addCase: asyncPipe(
       reqTransformers.addCase,
       fetchAPI,
-      resTransformers.addCase
+      withAuth(resTransformers.addCase)
     ),
     updateCase: asyncPipe(
       reqTransformers.updateCase,
       fetchAPI,
-      resTransformers.updateCase
+      withAuth(resTransformers.updateCase)
     ),
 
     getHospitals: asyncPipe(
       reqTransformers.getHospitals,
       fetchAPI,
-      resTransformers.getHospitals
+      withAuth(resTransformers.getHospitals)
     ),
     addHospital: asyncPipe(
       reqTransformers.addHospital,
       fetchAPI,
-      resTransformers.addHospital
+      withAuth(resTransformers.addHospital)
     ),
 
     getGroups: asyncPipe(

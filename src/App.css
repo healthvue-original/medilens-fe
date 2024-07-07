@@ -8,6 +8,13 @@ body,
   display: none;
 }
 
+#boot-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
 .loader {
   height: 2px;
   overflow: hidden;
