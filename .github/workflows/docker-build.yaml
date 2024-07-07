@@ -7,6 +7,13 @@ on:
         description: can push to docker hub?
         type: boolean
         default: true
+  push:
+    branches : [master]
+
+env:
+  namespace: healthvue
+  deployment: healthvue
+  tag: ${{ vars.DOCKERHUB_USERNAME}}/healthvue:${{ github.sha }}
 
 jobs:
   docker-build:
@@ -29,3 +36,11 @@ jobs:
           push: ${{ inputs.dockerpush }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ vars.DOCKERHUB_USERNAME}}/healthvue:${{ github.sha }}
+
+      - name: Install kubectl
+        uses: tale/kubectl-action@v1
+        with:
+          base64-kube-config: ${{ secrets.KUBE_CONFIG }}
+
+      - name: Update image
+        run: kubectl set image deployment/${{ env.deployment }} ${{ env.deployment }}=${{ env.tag }} -n ${{ env.namespace }}
