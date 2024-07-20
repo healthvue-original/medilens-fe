@@ -1,10 +1,10 @@
 import CaseReportView from "@/components/Reports/CaseReportView";
 import { api } from "@/services/api";
-import { CaseModel } from "@/services/api/models";
+import { Case } from "@/services/api/models";
 import { ActionFunction, LoaderFunction, useLoaderData } from "react-router";
 
 type LoaderData = {
-  caseObj: CaseModel;
+  caseObj: Case;
 };
 
 export const loader: LoaderFunction = async function loader({ params }) {
@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async function loader({ params }) {
   }
   const cases = await api.getCases();
 
-  const caseObj = cases.find((c) => c.id === +params.caseId);
+  const caseObj = cases.find((c) => c.id === +params?.caseId);
 
   return {
     caseObj,

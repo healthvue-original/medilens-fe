@@ -1,13 +1,13 @@
 import {
-  CaseModel,
-  CommentModel,
-  GroupModel,
-  HospitalModel,
-  PatientModel,
-  ScanJobModel,
-  ScannerModel,
-  SpecimenModel,
-  UserModel,
+  Case,
+  Comment,
+  Group,
+  Hospital,
+  Patient,
+  ScanJob,
+  Scanner,
+  Specimen,
+  User,
 } from "./models";
 
 type ConstructURL = { constructURL: (url: string) => string };
@@ -29,56 +29,75 @@ export type ReqTransformer<T> = AsyncTask<T, FetchOptions>;
 
 export type ResTransformer<T, U> = AsyncTask<T, U>;
 
-export type CommonOmit = "id" | "created_at" | "updated_at";
+export type CommonOmit = "id" | "created_at" | "updated_at" | "org_id" | "org";
 
-export type PatientPayload = Omit<PatientModel, CommonOmit>;
+export type PatientPayload = Omit<Patient, CommonOmit | "user">;
 
-export type CasePayload = Omit<CaseModel, CommonOmit | "status" | "result">;
+export type CasePayload = Pick<
+  Case,
+  "name" | "created_by_id" | "description" | "hospital_id" | "patient_id"
+>;
 
-export type HospitalPayload = Omit<HospitalModel, CommonOmit>;
+export type HospitalPayload = Omit<Hospital, CommonOmit>;
 
-export type GroupPayload = Omit<GroupModel, CommonOmit>;
+export type GroupPayload = Omit<Group, CommonOmit>;
 
-export type SpecimenPayload = Omit<SpecimenModel, CommonOmit>;
+export type SpecimenPayload = Pick<
+  Specimen,
+  "case_id" | "job_id" | "file_path" | "name" | "created_by_id"
+>;
 
-export type ScannerPayload = Omit<ScannerModel, CommonOmit>;
+export type ScannerPayload = Omit<Scanner, CommonOmit>;
 
-export type ScanJobPayload = Omit<ScanJobModel, CommonOmit | "status">;
+export type ScanJobPayload = Pick<
+  ScanJob,
+  "case_id" | "slot_id" | "scanner_id"
+>;
 
-export type CommentPayload = Omit<CommentModel, CommonOmit>;
+export type CommentPayload = Pick<
+  Comment,
+  "entity" | "entity_id" | "parent_id" | "comment"
+>;
+
+export type UserPayload = Omit<User, CommonOmit | "name" | "signature">;
+
+export type CreateOrgPayload = Pick<User, "password" | "email"> & {
+  org_name: string;
+};
 
 export type API = {
-  isAuthenticated: () => Promise<boolean>;
-  getUserData: () => Promise<UserModel>;
+  createOrg: (userPayload: UserPayload) => Promise<User>;
+  login: (userPayload: UserPayload) => Promise<User>;
+  getUserData: () => Promise<User>;
 
   // patients
-  getPatients: () => Promise<PatientModel[]>;
-  addPatient: (patient: PatientPayload) => Promise<PatientModel>;
+  getPatients: () => Promise<Patient[]>;
+  addPatient: (patient: PatientPayload) => Promise<Patient>;
 
   // cases
-  getCases: () => Promise<CaseModel[]>;
-  addCase: (caseObj: CasePayload) => Promise<CaseModel>;
-  updateCase: (caseObj: CaseModel) => Promise<CaseModel>;
+  getCases: () => Promise<Case[]>;
+  addCase: (caseObj: CasePayload) => Promise<Case>;
+  updateCase: (caseObj: Case) => Promise<Case>;
 
   // hospitals
-  getHospitals: () => Promise<HospitalModel[]>;
-  addHospital: (hospital: HospitalPayload) => Promise<HospitalModel>;
+  getHospitals: () => Promise<Hospital[]>;
+  addHospital: (hospital: HospitalPayload) => Promise<Hospital>;
 
   // groups
-  getGroups: () => Promise<GroupModel[]>;
-  addGroup: (group: GroupPayload) => Promise<GroupModel>;
+  getGroups: () => Promise<Group[]>;
+  addGroup: (group: GroupPayload) => Promise<Group>;
 
   // specimens
-  getSpecimens: ({ caseId }: { caseId: number }) => Promise<SpecimenModel[]>;
-  addSpecimen: (specimen: SpecimenPayload) => Promise<SpecimenModel>;
+  getSpecimens: ({ caseId }: { caseId: number }) => Promise<Specimen[]>;
+  addSpecimen: (specimen: SpecimenPayload) => Promise<Specimen>;
 
   // scanners
-  getScanners: () => Promise<ScannerModel[]>;
-  addScanner: (scanner: ScannerPayload) => Promise<ScannerModel>;
+  getScanners: () => Promise<Scanner[]>;
+  addScanner: (scanner: ScannerPayload) => Promise<Scanner>;
 
   // scan_jobs
-  getScanJobs: () => Promise<ScanJobModel[]>;
-  addScanJob: (job: ScanJobPayload) => Promise<ScanJobModel>;
+  getScanJobs: () => Promise<ScanJob[]>;
+  addScanJob: (job: ScanJobPayload) => Promise<ScanJob>;
 
   // comments
   getComments: ({
@@ -87,8 +106,8 @@ export type API = {
   }: {
     entity: string;
     entity_id: number;
-  }) => Promise<CommentModel[]>;
-  addComment: (props: CommentPayload) => Promise<CommentModel>;
+  }) => Promise<Comment[]>;
+  addComment: (props: CommentPayload) => Promise<Comment>;
 };
 
 export type ObjectType = { [key: string]: any };

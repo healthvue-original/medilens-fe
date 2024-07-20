@@ -1,4 +1,5 @@
 import { AsyncTask, ObjectType } from "./types";
+import Cookies from "js-cookie";
 
 export const API_HOST = import.meta.env.PROD
   ? "https://gently-concise-dogfish.ngrok-free.app/healthvue-server"
@@ -6,6 +7,21 @@ export const API_HOST = import.meta.env.PROD
 
 export const constructURL = (url: string): string => {
   return `${API_HOST}${url}`;
+};
+
+export const parseHeaders = (headers: Headers): Record<string, string> => {
+  const entries = Array.from(headers.entries());
+  return entries.reduce<Record<string, string>>((acc, [k, v]) => {
+    acc[k] = v;
+    return acc;
+  }, {});
+};
+
+export const getAuthTokenFromCookies = () => {
+  const token = Cookies.get("authToken");
+  console.log(token);
+
+  return token;
 };
 
 export const asyncPipe =

@@ -4,15 +4,25 @@ export const createReqTransformers = ({
   constructURL,
 }: TransformerProps): Record<keyof API, ReqTransformer<any>> => {
   return {
-    isAuthenticated: async () => {
+    createOrg: async (orgData) => {
       return {
-        url: constructURL("/session"),
-        method: "GET",
+        url: constructURL("/users"),
+        method: "POST",
+        body: JSON.stringify(orgData),
       };
     },
+
+    login: async (userData) => {
+      return {
+        url: constructURL("/login"),
+        method: "POST",
+        body: JSON.stringify(userData),
+      };
+    },
+
     getUserData: async () => {
       return {
-        url: constructURL("/user"),
+        url: constructURL("/users/current"),
         method: "GET",
       };
     },

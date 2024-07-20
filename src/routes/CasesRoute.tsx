@@ -1,12 +1,12 @@
 import { CasesTableView } from "@/components/Cases/CasesTableView";
 import { api } from "@/services/api";
-import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
+import { Case, Hospital, Patient } from "@/services/api/models";
 import { ActionFunction, LoaderFunction, useLoaderData } from "react-router";
 
 type LoaderData = {
-  patients: PatientModel[];
-  cases: CaseModel[];
-  hospitals: HospitalModel[];
+  patients: Patient[];
+  cases: Case[];
+  hospitals: Hospital[];
 };
 
 export const loader: LoaderFunction = async function loader() {
@@ -41,7 +41,7 @@ export const action: ActionFunction = async function action({ request }) {
     description: formData.get("description") as string,
     patient_id: +patient_id,
     hospital_id: +hospital_id,
-    created_by: 1,
+    created_by_id: 1,
   };
 
   await api.addCase(payload);

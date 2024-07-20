@@ -18,7 +18,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { CaseModel, ScannerModel } from "@/services/api/models";
+import { Case, Scanner } from "@/services/api/models";
 import { SelectPopover } from "../SelectPopover";
 import { useAPI } from "@/context/APIProvider";
 import { ScanJobPayload } from "@/services/api/types";
@@ -30,8 +30,8 @@ export default function AddScanJobDialog({
   cases,
 }: {
   closeDialog: () => void;
-  cases: CaseModel[];
-  scanners: ScannerModel[];
+  cases: Case[];
+  scanners: Scanner[];
 }): JSX.Element | null {
   const [loading, setLoading] = useState(false);
   const [case_id, setCaseId] = useState("");
@@ -57,7 +57,7 @@ export default function AddScanJobDialog({
       job_id: createdJob.id,
       file_path: "scans/FDSSD43534GDFX",
       name: "Dummy",
-      user_id: 1,
+      created_by_id: 1,
     });
 
     setLoading(false);

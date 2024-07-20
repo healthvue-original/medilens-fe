@@ -1,15 +1,32 @@
-import { CommentModel } from "../models";
+import { Comment } from "../models";
 import { API, ResTransformer, TransformerProps } from "../types";
+import { parseHeaders } from "../utils";
+import Cookies from "js-cookie";
 
 export const createResTransformers = (
   props: TransformerProps
 ): Record<keyof API, ResTransformer<Response, any>> => {
   return {
-    isAuthenticated: async (response): Promise<any> => {
-      const resp = true;
-      return resp;
+    createOrg: async (response): Promise<any> => {
+      const data = await response.json();
+      return data.users ?? [];
     },
-    getUserData: async (response): Promise<any> => {
+    login: async (response): Promise<any> => {
+      const data = await response.json();
+      const headers = parseHeaders(response.headers);
+      const token = headers.authorization;
+      props.setFetchOptions({
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      Cookies.set("authToken", token);
+
+      return data ?? [];
+    },
+
+    getUserData: async (): Promise<any> => {
       const resp = { id: 1, name: "Navin" };
       return resp;
     },
@@ -80,17 +97,12 @@ export const createResTransformers = (
       return resp;
     },
 
-    getComments: async (response): Promise<CommentModel[]> => {
+    getComments: async (response): Promise<Comment[]> => {
       const resp = await response.json();
-      return (
-        resp.data?.comments?.map((com: CommentModel) => ({
-          ...com,
-          comment: JSON.parse(com.comment),
-        })) ?? []
-      );
+      return resp.data?.comments;
     },
 
-    addComment: async (response): Promise<CommentModel> => {
+    addComment: async (response): Promise<Comment> => {
       const resp = await response.json();
       return resp;
     },

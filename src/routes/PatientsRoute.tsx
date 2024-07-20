@@ -1,6 +1,6 @@
 import { PatientTableView } from "@/components/Patients/PatientTableView";
 import { api } from "@/services/api";
-import { PatientModel } from "@/services/api/models";
+import { Patient } from "@/services/api/models";
 import {
   ActionFunction,
   json,
@@ -38,7 +38,7 @@ export const action: ActionFunction = async function action({ request }) {
 };
 
 function Component(): JSX.Element {
-  const { patients } = useLoaderData() as { patients: PatientModel[] };
+  const { patients } = useLoaderData() as { patients: Patient[] };
   return (
     <section className="patients p-8 h-full flex flex-col">
       <PatientTableView patients={patients} />

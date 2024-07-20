@@ -29,7 +29,16 @@ export const router = createBrowserRouter(
           lazy={() => import("./routes/ReportsRoute")}
         />
       </Route>
-      <Route path="/auth" lazy={() => import("./routes/AuthRoute")} />
+      <Route path="/auth" lazy={() => import("./routes/Auth/AuthRoute")}>
+        <Route
+          path="/auth/login"
+          lazy={() => import("./routes/Auth/LoginRoute")}
+        />
+        <Route
+          path="/auth/signup"
+          lazy={() => import("./routes/Auth/SignupRoute")}
+        />
+      </Route>
     </Route>
   ),
   {

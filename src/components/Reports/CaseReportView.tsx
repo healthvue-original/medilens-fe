@@ -6,9 +6,9 @@ import {
   PagedeComponentCreator,
   PagedHTMLInstance,
 } from "paged-html/build/types";
-import { CaseModel } from "@/services/api/models";
+import { Case } from "@/services/api/models";
 
-export default function View({ caseObj }: { caseObj: CaseModel }): JSX.Element {
+export default function View({ caseObj }: { caseObj: Case }): JSX.Element {
   useEffect(() => {
     const pdfContainer = document.getElementById("pdf-container");
 
@@ -21,7 +21,7 @@ export default function View({ caseObj }: { caseObj: CaseModel }): JSX.Element {
   return <div id="pdf-container"></div>;
 }
 
-function ListView(caseObj: CaseModel): PagedeComponentCreator {
+function ListView(caseObj: Case): PagedeComponentCreator {
   const patient = caseObj.patient;
   if (!patient) {
     throw new Error("patient is Empty");
@@ -93,7 +93,7 @@ async function generateReport({
   caseObj,
 }: {
   container: HTMLElement;
-  caseObj: CaseModel;
+  caseObj: Case;
 }) {
   const root = container;
 

@@ -1,12 +1,12 @@
 import { ScanJobsTableView } from "@/components/ScanJobs/ScanJobsTableView";
 import { api } from "@/services/api";
-import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
+import { Case, ScanJob, Scanner } from "@/services/api/models";
 import { LoaderFunction, useLoaderData } from "react-router";
 
 type ScanJobsLoaderData = {
-  scanJobs: ScanJobModel[];
-  cases: CaseModel[];
-  scanners: ScannerModel[];
+  scanJobs: ScanJob[];
+  cases: Case[];
+  scanners: Scanner[];
 };
 
 export const loader: LoaderFunction = async function loader() {

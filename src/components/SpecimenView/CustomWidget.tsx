@@ -1,6 +1,4 @@
-export default function CustomWidget(props): JSX.Element {
-  console.log(props);
-
+export default function CustomWidget(): JSX.Element {
   return (
     <div>
       <p>Helloo</p>

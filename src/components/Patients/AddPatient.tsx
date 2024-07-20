@@ -9,7 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useFetcher, useNavigation } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 import { useEffect } from "react";
 import { PatientPayload } from "@/services/api/types";
 import { FormResponse } from "@/routes/types";

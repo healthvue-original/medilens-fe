@@ -2,15 +2,11 @@ import "../App.css";
 import Header from "@/components/Header/Header";
 import LeftNav from "@/components/LeftNav";
 import { api } from "@/services/api";
-import { LoaderFunction, Outlet, redirect, useNavigation } from "react-router";
+import { LoaderFunction, Outlet, useNavigation } from "react-router";
 import { useFetcher } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeProvider";
 
 export const loader: LoaderFunction = async () => {
-  const isAuthenticated = await api.isAuthenticated();
-  if (!isAuthenticated) {
-    return redirect("/auth");
-  }
   const userMeta = await api.getUserData();
   return userMeta;
 };

@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function waitFor(delay: number = 2000, data: any): Promise<any> {
+export function waitFor<T>(delay: number = 2000, data: T): Promise<T> {
   return new Promise((res) => {
     setTimeout(() => res(data), delay);
   });
@@ -13,6 +13,6 @@ export function waitFor(delay: number = 2000, data: any): Promise<any> {
 
 export const dateFormatter = new Intl.DateTimeFormat("en-IN");
 
-export const updatePageTitle = (title) => {
+export const updatePageTitle = (title: string) => {
   document.title = title;
 };

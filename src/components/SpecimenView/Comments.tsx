@@ -1,13 +1,14 @@
-import { CommentModel } from "@/services/api/models";
+import { Comment } from "@/services/api/models";
+import { Annotation } from "./types";
 
 export default function Comments({
   comments,
   loading,
   onCommentClick,
 }: {
-  comments: CommentModel[];
+  comments: Comment[];
   loading: boolean;
-  onCommentClick: (comment: CommentModel) => void;
+  onCommentClick: (comment: Comment) => void;
 }): JSX.Element {
   if (loading) {
     return <div>Loading...</div>;
@@ -15,14 +16,16 @@ export default function Comments({
 
   return (
     <div className="">
-      <div className=" text-center p-2 border-b-2 border-secondary">Comments</div>
+      <div className=" text-center p-2 border-b-2 border-secondary">
+        Comments
+      </div>
       {comments.map((comment) => (
         <div
           onClick={() => onCommentClick(comment)}
           key={comment.id}
           className="p-5 border-b-2 border-secondary cursor-pointer"
         >
-          {getCommentText(comment.comment)}
+          {getCommentText(JSON.parse(comment.comment))}
         </div>
       ))}
       {comments.length == 0 && <div>No Comments</div>}
@@ -30,6 +33,8 @@ export default function Comments({
   );
 }
 
-function getCommentText(annotation): string {
-  return annotation.body[0].value;
+function getCommentText(annotation: Annotation): string | undefined {
+  if (annotation.body && annotation.body?.length > 0) {
+    return annotation.body[0]?.value;
+  }
 }

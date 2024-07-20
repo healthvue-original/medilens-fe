@@ -1,10 +1,10 @@
 import { HospitalsTableView } from "@/components/Hospitals/HospitalsTableView";
 import { api } from "@/services/api";
-import { HospitalModel } from "@/services/api/models";
+import { Hospital } from "@/services/api/models";
 import { LoaderFunction, useLoaderData } from "react-router";
 
 type LoaderData = {
-  hospitals: HospitalModel[];
+  hospitals: Hospital[];
 };
 
 export const loader: LoaderFunction = async function loader() {

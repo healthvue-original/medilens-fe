@@ -12,9 +12,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { HospitalModel, PatientModel } from "@/services/api/models";
+import { Hospital, Patient } from "@/services/api/models";
 import { SelectPopover } from "../SelectPopover";
-import { useAPI } from "@/context/APIProvider";
 import { CasePayload } from "@/services/api/types";
 import * as React from "react";
 import { FormResponse } from "@/routes/types";
@@ -25,8 +24,8 @@ export default function AddCaseDialog({
   hospitals,
 }: {
   closeDialog: () => void;
-  patients: PatientModel[];
-  hospitals: HospitalModel[];
+  patients: Patient[];
+  hospitals: Hospital[];
 }): JSX.Element | null {
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
@@ -34,7 +33,7 @@ export default function AddCaseDialog({
   const fetcher = useFetcher<FormResponse<CasePayload>>();
 
   const state = fetcher.state;
-  const { success, formErrors } = fetcher.data ?? {};
+  const { success } = fetcher.data ?? {};
 
   const loading = state === "submitting";
 

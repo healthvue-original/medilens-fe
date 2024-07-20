@@ -1,13 +1,20 @@
 import { createReqTransformers } from "./transformers/reqTransformer";
 import { createResTransformers } from "./transformers/resTransformers";
 import { API, createAPIProps, FetchOptions, ResTransformer } from "./types";
-import { asyncPipe, constructURL, deepMerge, redirectTo } from "./utils";
+import {
+  asyncPipe,
+  constructURL,
+  deepMerge,
+  getAuthTokenFromCookies,
+  redirectTo,
+} from "./utils";
 
 export function createAPI({ org }: createAPIProps): API {
   const defaultFetchOptions = {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: getAuthTokenFromCookies(),
     },
   } as RequestInit;
 
@@ -43,11 +50,13 @@ export function createAPI({ org }: createAPIProps): API {
     };
 
   return {
-    isAuthenticated: asyncPipe(
-      reqTransformers.isAuthenticated,
+    createOrg: asyncPipe(
+      reqTransformers.createOrg,
       fetchAPI,
-      resTransformers.isAuthenticated
+      resTransformers.createOrg
     ),
+    login: asyncPipe(reqTransformers.login, fetchAPI, resTransformers.login),
+
     getUserData: asyncPipe(
       reqTransformers.getUserData,
       fetchAPI,
