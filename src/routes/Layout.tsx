@@ -2,13 +2,17 @@ import "../App.css";
 import Header from "@/components/Header/Header";
 import LeftNav from "@/components/LeftNav";
 import { api } from "@/services/api";
-import { LoaderFunction, Outlet, useNavigation } from "react-router";
+import { LoaderFunction, Outlet, redirect, useNavigation } from "react-router";
 import { useFetcher } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeProvider";
 
 export const loader: LoaderFunction = async () => {
-  const userMeta = await api.getUserData();
-  return userMeta;
+  try {
+    const userMeta = await api.getUserData();
+    return userMeta;
+  } catch (err) {
+    return redirect("/auth/login");
+  }
 };
 
 export default function Layout(): JSX.Element {

@@ -2,11 +2,11 @@ import { api } from "@/services/api";
 import { LoaderFunction, Outlet, redirect } from "react-router";
 
 export const loader: LoaderFunction = async function loader({ request }) {
-  const userData = await api.getUserData();
-
-  if (!userData) {
+  try {
+    await api.getUserData();
     return redirect("/");
-  } else {
+  } catch (err) {
+    console.error(err);
     const url = new URL(request.url);
 
     if (url.pathname === "/auth" || url.pathname === "/auth/") {

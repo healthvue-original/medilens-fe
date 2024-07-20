@@ -26,9 +26,9 @@ export const createResTransformers = (
       return data ?? [];
     },
 
-    getUserData: async (): Promise<any> => {
-      const resp = { id: 1, name: "Navin" };
-      return resp;
+    getUserData: async (response): Promise<any> => {
+      const data = await response.json();
+      return data;
     },
     getPatients: async (response): Promise<any> => {
       const data = await response.json();

@@ -60,7 +60,7 @@ export function createAPI({ org }: createAPIProps): API {
     getUserData: asyncPipe(
       reqTransformers.getUserData,
       fetchAPI,
-      withAuth(resTransformers.getUserData)
+      resTransformers.getUserData
     ),
 
     getPatients: asyncPipe(

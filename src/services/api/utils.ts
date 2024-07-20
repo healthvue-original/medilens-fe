@@ -19,8 +19,6 @@ export const parseHeaders = (headers: Headers): Record<string, string> => {
 
 export const getAuthTokenFromCookies = () => {
   const token = Cookies.get("authToken");
-  console.log(token);
-
   return token;
 };
 
