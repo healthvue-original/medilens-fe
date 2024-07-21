@@ -1,13 +1,13 @@
-import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
+import { Case, Hospital, Patient } from "@/services/api/models";
 import { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import { CasesTableView } from "./CasesTableView";
 
 export default function CasesList(): JSX.Element {
   const { cases, patients, hospitals } = useLoaderData() as {
-    cases: CaseModel[];
-    patients: PatientModel[];
-    hospitals: HospitalModel[];
+    cases: Case[];
+    patients: Patient[];
+    hospitals: Hospital[];
   };
 
   return (

@@ -7,12 +7,12 @@ import TableMain from "../TableView/TableBody";
 import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
-import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
+import { Case, ScanJob, Scanner } from "@/services/api/models";
 import AddScanJobDialog from "./AddScanJobDialog";
 import { NavLink } from "react-router-dom";
 import { useDialog } from "@/context/DialogProvider";
 
-const PatientColumnDef: ColumnDef<ScanJobModel>[] = [
+const PatientColumnDef: ColumnDef<ScanJob>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -107,9 +107,9 @@ export function ScanJobsTableView({
   scanners,
   cases,
 }: {
-  scanJobs: ScanJobModel[];
-  cases: CaseModel[];
-  scanners: ScannerModel[];
+  scanJobs: ScanJob[];
+  cases: Case[];
+  scanners: Scanner[];
 }): JSX.Element {
   const dialog = useDialog();
 

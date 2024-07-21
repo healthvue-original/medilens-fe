@@ -16,7 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { CaseModel, PatientModel } from "@/services/api/models";
+import { Case, Patient } from "@/services/api/models";
 import { LiaFileMedicalAltSolid } from "react-icons/lia";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
@@ -35,7 +35,7 @@ export default function CaseDetail({
   caseObj,
 }: {
   closeDialog: () => void;
-  caseObj?: CaseModel;
+  caseObj?: Case;
 }): JSX.Element {
   const preventCloseOnRowClick = (e: PointerEvent) => {
     const target = e.target as Node;
@@ -83,7 +83,7 @@ export default function CaseDetail({
   );
 }
 
-function CaseDetailCard({ caseObj }: { caseObj: CaseModel }) {
+function CaseDetailCard({ caseObj }: { caseObj: Case }) {
   const [isEditingReport, setIsEditingReport] = useState(false);
   const [caseResult, setCaseResult] = useState(caseObj.result);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -162,7 +162,7 @@ function CaseDetailCard({ caseObj }: { caseObj: CaseModel }) {
   );
 }
 
-function PatientDetail({ patient }: { patient: PatientModel }): JSX.Element {
+function PatientDetail({ patient }: { patient: Patient }): JSX.Element {
   return (
     <div className="patient-detail">
       <div className="case-detail flex flex-col gap-3 mt-4">

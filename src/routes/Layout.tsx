@@ -2,17 +2,27 @@ import "../App.css";
 import Header from "@/components/Header/Header";
 import LeftNav from "@/components/LeftNav";
 import { api } from "@/services/api";
-import { LoaderFunction, Outlet, redirect, useNavigation } from "react-router";
+import {
+  LoaderFunction,
+  Outlet,
+  redirect,
+  useLoaderData,
+  useNavigation,
+} from "react-router";
 import { useFetcher } from "react-router-dom";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { useGlobalState } from "@/context/GlobalStateProvider";
+import { User } from "@/services/api/models";
+import { useEffect } from "react";
+import { UserActions } from "@/context/GlobalStateProvider/reducers/user";
 
 export const loader: LoaderFunction = async () => {
-  const isAuthenticated = await api.isAuthenticated();
-  if (!isAuthenticated) {
-    return redirect("/auth");
+  try {
+    const userData = await api.getUserData();
+    return userData;
+  } catch (err) {
+    return redirect("/auth/login");
   }
-  const userMeta = await api.getUserData();
-  return userMeta;
 };
 
 export default function Layout(): JSX.Element {
@@ -23,6 +33,15 @@ export default function Layout(): JSX.Element {
     navigation.state === "submitting" ||
     fetcher.state === "submitting" ||
     fetcher.state === "loading";
+
+  const userData = useLoaderData() as User;
+
+  const { dispatch } = useGlobalState();
+
+  useEffect(() => {
+    dispatch(UserActions.setUser(userData));
+  }, [userData]);
+
   return (
     <ThemeProvider>
       <section className="flex h-full flex-col">

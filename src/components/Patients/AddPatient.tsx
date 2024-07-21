@@ -9,10 +9,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useFetcher, useNavigation } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 import { useEffect } from "react";
 import { PatientPayload } from "@/services/api/types";
 import { FormResponse } from "@/routes/types";
+import { useGlobalState } from "@/context/GlobalStateProvider";
+import HiddenInput from "../ui/hidden-input";
 
 export default function AddPatientDialog({
   onClose,
@@ -21,6 +23,7 @@ export default function AddPatientDialog({
 }): JSX.Element | null {
   const fetcher = useFetcher<FormResponse<PatientPayload>>();
   const { formErrors, success } = fetcher.data ?? {};
+  const { state: globalState } = useGlobalState();
 
   const state = fetcher.state;
 
@@ -62,6 +65,7 @@ export default function AddPatientDialog({
             <Label htmlFor="phone">Phone</Label>
             <Input id="phone" name="phone" errorText={formErrors?.phone} />
           </div>
+          <HiddenInput name="created_by" value={globalState.user.id} />
           <DialogFooter>
             <Button
               type="submit"

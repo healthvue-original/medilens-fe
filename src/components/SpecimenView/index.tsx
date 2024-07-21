@@ -1,4 +1,4 @@
-import { SpecimenModel } from "@/services/api/models";
+import { Specimen } from "@/services/api/models";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -13,7 +13,7 @@ import useEditor from "./useEditor";
 export default function SpecimenView({
   specimens,
 }: {
-  specimens: SpecimenModel[];
+  specimens: Specimen[];
 }): JSX.Element {
   const {
     commentLoading,

@@ -3,13 +3,14 @@ import OpenSeadragon from "openseadragon";
 import Annotorious from "@recogito/annotorious-openseadragon";
 import "@recogito/annotorious-openseadragon/dist/annotorious.min.css";
 import { useAPI } from "@/context/APIProvider";
-import { CommentModel, SpecimenModel } from "@/services/api/models";
+import { Comment, Specimen } from "@/services/api/models";
 import { API_HOST } from "@/services/api/utils";
+import { Annotation } from "./types";
 
 const baseURL = import.meta.env.BASE_URL;
 const isProduction = import.meta.env.PROD;
 
-const getTileSource = (currentSpecimen: SpecimenModel): string => {
+const getTileSource = (currentSpecimen: Specimen): string => {
   return isProduction
     ? `${API_HOST}/cases/${currentSpecimen.case_id}/specimens/${currentSpecimen.id}/dzi?key=sample-specimen.dzi.dzi`
     : "http://localhost:8081/output/sample-specimen.dzi";
@@ -20,21 +21,21 @@ export default function useEditor({
   specimens,
 }: {
   containerId?: string;
-  specimens: SpecimenModel[];
+  specimens: Specimen[];
 }) {
   const api = useAPI();
 
   const [viewer, setViewer] = useState<OpenSeadragon.Viewer | null>(null);
-  const [annotorious, setAnnotorious] = useState(null);
+  const [annotorious, setAnnotorious] = useState<Annotorious>(null);
 
-  const [currentSpecimen, setCurrentSpecimen] = useState<SpecimenModel>(
+  const [currentSpecimen, setCurrentSpecimen] = useState<Specimen>(
     specimens[0]
   );
 
   const [commentLoading, setCommentLoading] = useState(false);
-  const [comments, setComments] = useState<CommentModel[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
 
-  const getComments = async (specimen: SpecimenModel) => {
+  const getComments = async (specimen: Specimen) => {
     setCommentLoading(true);
     const commentList = await api.getComments({
       entity: "specimen",
@@ -51,12 +52,12 @@ export default function useEditor({
     }
   }, [currentSpecimen]);
 
-  const onCommentClick = (comment) => {
+  const onCommentClick = (comment: Comment) => {
     annotorious.panTo(comment.comment);
     annotorious.selectAnnotation(comment.comment);
   };
 
-  const addComment = async (annotation) => {
+  const addComment = async (annotation: Annotation) => {
     await api.addComment({
       entity: "specimen",
       entity_id: currentSpecimen.job_id,
@@ -68,8 +69,9 @@ export default function useEditor({
     // setComments((comments) => [...comments, annotation]);
   };
 
-  const updateComment = async (annotation) => {
-    const replies = annotation.body.slice(1);
+  const updateComment = async (annotation: Annotation) => {
+    const replies = annotation?.body?.slice(1);
+    console.log(replies);
   };
 
   // window.viewer = viewer;

@@ -7,12 +7,11 @@ import TableMain from "../TableView/TableBody";
 import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
-import { useState } from "react";
 import AddPatientDialog from "./AddPatient";
-import { PatientModel } from "@/services/api/models";
+import { Patient } from "@/services/api/models";
 import { useDialog } from "@/context/DialogProvider";
 
-const PatientColumnDef: ColumnDef<PatientModel>[] = [
+const PatientColumnDef: ColumnDef<Patient>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -92,7 +91,7 @@ const PatientColumnDef: ColumnDef<PatientModel>[] = [
 export function PatientTableView({
   patients,
 }: {
-  patients: PatientModel[];
+  patients: Patient[];
 }): JSX.Element {
   const dialog = useDialog();
   const tableInstance = useTableMain({

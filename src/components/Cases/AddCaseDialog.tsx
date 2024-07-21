@@ -12,12 +12,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { HospitalModel, PatientModel } from "@/services/api/models";
+import { Hospital, Patient } from "@/services/api/models";
 import { SelectPopover } from "../SelectPopover";
-import { useAPI } from "@/context/APIProvider";
 import { CasePayload } from "@/services/api/types";
 import * as React from "react";
 import { FormResponse } from "@/routes/types";
+import HiddenInput from "../ui/hidden-input";
+import { useGlobalState } from "@/context/GlobalStateProvider";
 
 export default function AddCaseDialog({
   closeDialog,
@@ -25,16 +26,18 @@ export default function AddCaseDialog({
   hospitals,
 }: {
   closeDialog: () => void;
-  patients: PatientModel[];
-  hospitals: HospitalModel[];
+  patients: Patient[];
+  hospitals: Hospital[];
 }): JSX.Element | null {
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
 
+  const { state: globalState } = useGlobalState();
+
   const fetcher = useFetcher<FormResponse<CasePayload>>();
 
   const state = fetcher.state;
-  const { success, formErrors } = fetcher.data ?? {};
+  const { success } = fetcher.data ?? {};
 
   const loading = state === "submitting";
 
@@ -94,6 +97,7 @@ export default function AddCaseDialog({
             <Label htmlFor="description">Description</Label>
             <Input id="description" name="description" />
           </div>
+          <HiddenInput name="created_by_id" value={globalState.user.id} />
           <div>
             <Label htmlFor="hospital_id">Hospital</Label>
             <input

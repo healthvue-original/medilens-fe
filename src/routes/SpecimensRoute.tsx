@@ -1,10 +1,10 @@
 import SpecimenView from "@/components/SpecimenView";
 import { api } from "@/services/api";
-import { SpecimenModel } from "@/services/api/models";
+import { Specimen } from "@/services/api/models";
 import { ActionFunction, LoaderFunction, useLoaderData } from "react-router";
 
 type LoaderData = {
-  specimens: SpecimenModel[];
+  specimens: Specimen[];
 };
 
 export const loader: LoaderFunction = async function loader({ params }) {

@@ -1,4 +1,3 @@
-import { Case } from "./types";
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef, Row } from "@tanstack/react-table";
@@ -9,7 +8,7 @@ import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import AddCaseDialog from "./AddCaseDialog";
-import { CaseModel, HospitalModel, PatientModel } from "@/services/api/models";
+import { Case, Hospital, Patient } from "@/services/api/models";
 import { useDialog } from "@/context/DialogProvider";
 import CaseDetail from "./CaseDetail";
 
@@ -96,9 +95,9 @@ export function CasesTableView({
   patients,
   hospitals,
 }: {
-  cases: CaseModel[];
-  patients: PatientModel[];
-  hospitals: HospitalModel[];
+  cases: Case[];
+  patients: Patient[];
+  hospitals: Hospital[];
 }): JSX.Element {
   const dialog = useDialog();
 
@@ -117,7 +116,7 @@ export function CasesTableView({
     );
   };
 
-  const onRowClick = (row: Row<CaseModel>) => {
+  const onRowClick = (row: Row<Case>) => {
     const caseId = row.getValue("id");
     console.log(caseId);
 

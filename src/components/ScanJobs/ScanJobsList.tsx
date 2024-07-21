@@ -1,13 +1,13 @@
-import { CaseModel, ScanJobModel, ScannerModel } from "@/services/api/models";
+import { Case, ScanJob, Scanner } from "@/services/api/models";
 import { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import { ScanJobsTableView } from "./ScanJobsTableView";
 
 export default function ScanJobsList(): JSX.Element {
   const { scanJobs, scanners, cases } = useLoaderData() as {
-    scanJobs: ScanJobModel[];
-    scanners: ScannerModel[];
-    cases: CaseModel[];
+    scanJobs: ScanJob[];
+    scanners: Scanner[];
+    cases: Case[];
   };
 
   return (

@@ -1,4 +1,3 @@
-import { Hospital } from "./types";
 import { FaSort } from "react-icons/fa";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -10,7 +9,7 @@ import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import AddHospitalDialog from "./AddHospitalDialog";
-import { HospitalModel } from "@/services/api/models";
+import { Hospital } from "@/services/api/models";
 
 const HospitalColumnDef: ColumnDef<Hospital>[] = [
   {
@@ -64,7 +63,7 @@ const HospitalColumnDef: ColumnDef<Hospital>[] = [
 export function HospitalsTableView({
   hospitals,
 }: {
-  hospitals: HospitalModel[];
+  hospitals: Hospital[];
 }): JSX.Element {
   const [showAddHospitalForm, setShowAddHospitalForm] = useState(false);
   const tableInstance = useTableMain({
