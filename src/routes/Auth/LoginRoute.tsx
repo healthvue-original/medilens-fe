@@ -41,13 +41,11 @@ function Component(): JSX.Element {
               <Input
                 name="email"
                 placeholder="Email"
-                value={"pras@gmail.com"}
               />
               <Input
                 name="password"
                 type={"password"}
                 placeholder="Password"
-                value={"password"}
               />
             </div>
 

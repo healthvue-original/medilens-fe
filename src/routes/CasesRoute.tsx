@@ -41,7 +41,7 @@ export const action: ActionFunction = async function action({ request }) {
     description: formData.get("description") as string,
     patient_id: +patient_id,
     hospital_id: +hospital_id,
-    created_by_id: 1,
+    created_by_id: +(formData.get("created_by_id") ?? 0) as number,
   };
 
   await api.addCase(payload);

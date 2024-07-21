@@ -17,6 +17,8 @@ import { SelectPopover } from "../SelectPopover";
 import { CasePayload } from "@/services/api/types";
 import * as React from "react";
 import { FormResponse } from "@/routes/types";
+import HiddenInput from "../ui/hidden-input";
+import { useGlobalState } from "@/context/GlobalStateProvider";
 
 export default function AddCaseDialog({
   closeDialog,
@@ -29,6 +31,8 @@ export default function AddCaseDialog({
 }): JSX.Element | null {
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
+
+  const { state: globalState } = useGlobalState();
 
   const fetcher = useFetcher<FormResponse<CasePayload>>();
 
@@ -93,6 +97,7 @@ export default function AddCaseDialog({
             <Label htmlFor="description">Description</Label>
             <Input id="description" name="description" />
           </div>
+          <HiddenInput name="created_by_id" value={globalState.user.id} />
           <div>
             <Label htmlFor="hospital_id">Hospital</Label>
             <input
