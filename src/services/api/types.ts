@@ -62,12 +62,13 @@ export type CommentPayload = Pick<
 export type UserPayload = Omit<User, CommonOmit | "name" | "signature">;
 
 export type CreateOrgPayload = Pick<User, "password" | "email"> & {
-  org_name: string;
+  org_id: number;
 };
 
 export type API = {
   createOrg: (userPayload: UserPayload) => Promise<User>;
   login: (userPayload: UserPayload) => Promise<User>;
+  logout: () => Promise<void>;
   getUserData: () => Promise<User>;
 
   // patients

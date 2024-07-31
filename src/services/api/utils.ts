@@ -22,6 +22,10 @@ export const getAuthTokenFromCookies = () => {
   return token;
 };
 
+export const removeAuthTokenFromCookies = () => {
+  Cookies.remove("authToken");
+};
+
 export const asyncPipe =
   <T, U>(...tasks: AsyncTask<any, any>[]) =>
   (initialValue?: T): Promise<U> => {

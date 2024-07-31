@@ -9,7 +9,16 @@ export const createResTransformers = (
   return {
     createOrg: async (response): Promise<any> => {
       const data = await response.json();
-      return data.users ?? [];
+      const headers = parseHeaders(response.headers);
+      const token = headers.authorization;
+      props.setFetchOptions({
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      Cookies.set("authToken", token);
+      return data;
     },
     login: async (response): Promise<any> => {
       const data = await response.json();
@@ -25,6 +34,8 @@ export const createResTransformers = (
 
       return data ?? [];
     },
+
+    logout: async (): Promise<void> => {},
 
     getUserData: async (response): Promise<any> => {
       const data = await response.json();
