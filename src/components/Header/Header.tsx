@@ -13,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/services/api";
-import { useNavigate } from "react-router-dom";
 import { copyTextToClipboard } from "@/lib/utils";
 import { toast } from "sonner";
 import { useGlobalState } from "@/context/GlobalStateProvider";
@@ -22,7 +21,6 @@ const baseURL = import.meta.env.BASE_URL;
 
 export default function Header(): JSX.Element {
   const [isOpen, setIsOpen] = useState<undefined | boolean>(false);
-  const navigate = useNavigate();
   const { state } = useGlobalState();
 
   const orgId = state.user?.org_id;
@@ -36,7 +34,6 @@ export default function Header(): JSX.Element {
 
   const logout = async () => {
     await api.logout();
-    navigate(`${baseURL}/auth/login`, { replace: true });
     window.location.reload();
   };
 
