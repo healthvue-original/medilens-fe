@@ -7,6 +7,7 @@ import {
   deepMerge,
   getAuthTokenFromCookies,
   redirectTo,
+  removeAuthTokenFromCookies,
 } from "./utils";
 
 export function createAPI({ org }: createAPIProps): API {
@@ -56,6 +57,10 @@ export function createAPI({ org }: createAPIProps): API {
       resTransformers.createOrg
     ),
     login: asyncPipe(reqTransformers.login, fetchAPI, resTransformers.login),
+
+    logout: async () => {
+      removeAuthTokenFromCookies();
+    },
 
     getUserData: asyncPipe(
       reqTransformers.getUserData,

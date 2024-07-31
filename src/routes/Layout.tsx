@@ -15,6 +15,7 @@ import { useGlobalState } from "@/context/GlobalStateProvider";
 import { User } from "@/services/api/models";
 import { useEffect } from "react";
 import { UserActions } from "@/context/GlobalStateProvider/reducers/user";
+import { Toaster } from "@/components/ui/sonner";
 
 export const loader: LoaderFunction = async () => {
   try {
@@ -61,6 +62,7 @@ export default function Layout(): JSX.Element {
             <Outlet />
           </main>
         </section>
+        <Toaster position="top-center" />
       </section>
     </ThemeProvider>
   );

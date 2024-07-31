@@ -16,3 +16,7 @@ export const dateFormatter = new Intl.DateTimeFormat("en-IN");
 export const updatePageTitle = (title: string) => {
   document.title = title;
 };
+
+export async function copyTextToClipboard(text: string) {
+  return navigator.clipboard.writeText(text);
+}

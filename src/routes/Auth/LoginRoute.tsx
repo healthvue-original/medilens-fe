@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { api } from "@/services/api";
-import { ActionFunction, Form, Link, redirect } from "react-router-dom";
+import { ActionFunction, Form, redirect } from "react-router-dom";
 
 export const action: ActionFunction = async function action({ request }) {
   const formData = await request.formData();
@@ -38,15 +38,8 @@ function Component(): JSX.Element {
           </CardHeader>
           <CardContent className="mt-6">
             <div className="flex flex-col gap-4">
-              <Input
-                name="email"
-                placeholder="Email"
-              />
-              <Input
-                name="password"
-                type={"password"}
-                placeholder="Password"
-              />
+              <Input name="email" placeholder="Email" />
+              <Input name="password" type={"password"} placeholder="Password" />
             </div>
 
             <div className="mt-10 w-full">
@@ -54,9 +47,9 @@ function Component(): JSX.Element {
             </div>
 
             <div className="mt-6 flex justify-end">
-              <Link to={"/auth/signup"}>
+              {/* <Link to={"/auth/signup"}>
                 <Button variant="link">Create New Org</Button>
-              </Link>
+              </Link> */}
             </div>
           </CardContent>
         </div>
