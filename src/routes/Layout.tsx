@@ -10,7 +10,7 @@ import {
   useNavigation,
 } from "react-router";
 import { useFetcher } from "react-router-dom";
-import { ThemeProvider } from "@/context/ThemeProvider";
+import { ThemeProvider, useTheme } from "@/context/ThemeProvider";
 import { useGlobalState } from "@/context/GlobalStateProvider";
 import { User } from "@/services/api/models";
 import { useEffect } from "react";
@@ -62,8 +62,13 @@ export default function Layout(): JSX.Element {
             <Outlet />
           </main>
         </section>
-        <Toaster position="top-center" />
       </section>
+      <ToasterProvider />
     </ThemeProvider>
   );
+}
+
+function ToasterProvider() {
+  const { theme } = useTheme();
+  return <Toaster position="top-center" richColors closeButton theme={theme} />;
 }

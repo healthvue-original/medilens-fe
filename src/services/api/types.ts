@@ -29,13 +29,19 @@ export type ReqTransformer<T> = AsyncTask<T, FetchOptions>;
 
 export type ResTransformer<T, U> = AsyncTask<T, U>;
 
-export type CommonOmit = "id" | "created_at" | "updated_at" | "org_id" | "org";
+export type CommonOmit =
+  | "id"
+  | "created_at"
+  | "created_by"
+  | "updated_at"
+  | "org_id"
+  | "org";
 
 export type PatientPayload = Omit<Patient, CommonOmit | "user">;
 
 export type CasePayload = Pick<
   Case,
-  "name" | "created_by_id" | "description" | "hospital_id" | "patient_id"
+  "name" | "description" | "hospital_id" | "patient_id"
 >;
 
 export type HospitalPayload = Omit<Hospital, CommonOmit>;

@@ -21,7 +21,6 @@ export const action: ActionFunction = async function action({ request }) {
     email: formData.get("email") as string,
     sex: formData.get("sex") as string,
     phone: +(formData.get("phone") ?? 0) as number,
-    created_by: +(formData.get("created_by") ?? 0) as number,
   };
   if (Object.values(patient).some((val) => !val)) {
     return {
@@ -31,6 +30,7 @@ export const action: ActionFunction = async function action({ request }) {
       },
     };
   }
+
   await api.addPatient(patient);
   return json({
     success: true,
