@@ -36,7 +36,7 @@ export default function Header(): JSX.Element {
 
   const logout = async () => {
     await api.logout();
-    navigate("/auth/login", { replace: true });
+    navigate(`${baseURL}/auth/login`, { replace: true });
     window.location.reload();
   };
 
