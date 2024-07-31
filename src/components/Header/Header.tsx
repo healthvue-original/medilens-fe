@@ -29,9 +29,9 @@ export default function Header(): JSX.Element {
 
   const copyInviteLink = () => {
     const inviteLink = `${location.protocol}//${location.hostname}${baseURL}/auth/signup/?org_id=${orgId}`;
-    copyTextToClipboard(inviteLink).then(() =>
-      toast.success("Invite Link Copied")
-    );
+    copyTextToClipboard(inviteLink).then(() => {
+      toast.success("Invite Link Copied");
+    });
   };
 
   const logout = async () => {
