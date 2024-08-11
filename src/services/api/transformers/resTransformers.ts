@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 export const createResTransformers = (
   props: TransformerProps
-): Record<keyof API, ResTransformer<Response, any>> => {
+): Record<keyof Omit<API, "logout">, ResTransformer<Response, any>> => {
   return {
     createOrg: async (response): Promise<any> => {
       const data = await response.json();
@@ -35,12 +35,16 @@ export const createResTransformers = (
       return data ?? [];
     },
 
-    logout: async (): Promise<void> => {},
-
     getUserData: async (response): Promise<any> => {
       const data = await response.json();
       return data;
     },
+
+    getAllUsers: async (response): Promise<any> => {
+      const res = await response.json();
+      return res.data?.users ?? [];
+    },
+
     getPatients: async (response): Promise<any> => {
       const data = await response.json();
       return data.patients ?? [];

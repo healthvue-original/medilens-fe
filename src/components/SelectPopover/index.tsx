@@ -26,6 +26,7 @@ type SelectPopoverProps = {
   btnLabel: string;
   placeholder: string;
   emptyMessage: string;
+  initialValue?: string;
   onSelect: (item: ItemProp) => void;
 };
 
@@ -34,10 +35,11 @@ export function SelectPopover({
   btnLabel,
   placeholder,
   emptyMessage,
+  initialValue,
   onSelect,
 }: SelectPopoverProps) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue ?? "");
 
   return (
     <Popover open={open} onOpenChange={setOpen} modal={false}>

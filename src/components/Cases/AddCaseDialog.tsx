@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Hospital, Patient } from "@/services/api/models";
+import { Hospital, Patient, User } from "@/services/api/models";
 import { SelectPopover } from "../SelectPopover";
 import { CasePayload } from "@/services/api/types";
 import * as React from "react";
@@ -23,13 +23,16 @@ export default function AddCaseDialog({
   closeDialog,
   patients,
   hospitals,
+  users,
 }: {
   closeDialog: () => void;
   patients: Patient[];
   hospitals: Hospital[];
+  users: User[];
 }): JSX.Element | null {
   const [patient_id, setPatientId] = useState("");
   const [hospital_id, setHospitalId] = useState("");
+  const [assignee_id, setAssignee] = useState("");
 
   const fetcher = useFetcher<FormResponse<CasePayload>>();
 
@@ -54,6 +57,11 @@ export default function AddCaseDialog({
     ...h,
     id: `${h.id}`,
     value: `${h.name} - ${h.id}`,
+  }));
+
+  const transformedUsers = users.map((u) => ({
+    ...u,
+    value: `${u.email}`,
   }));
 
   return (
@@ -109,6 +117,24 @@ export default function AddCaseDialog({
                 placeholder="Select Hospital"
                 emptyMessage="No Hospital Found"
                 onSelect={(item) => setHospitalId(item.id)}
+              />
+            </div>
+          </div>
+          <div>
+            <Label htmlFor="assignee_id">Assignee</Label>
+            <input
+              name="assignee_id"
+              className="invisible"
+              id="assignee_id"
+              value={assignee_id}
+            />
+            <div className=" w-full">
+              <SelectPopover
+                items={transformedUsers}
+                btnLabel="Assignee"
+                placeholder="Select Assignee"
+                emptyMessage="No Users Found"
+                onSelect={(item) => setAssignee(item.id)}
               />
             </div>
           </div>

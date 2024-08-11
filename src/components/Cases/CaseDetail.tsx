@@ -16,7 +16,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Case, Patient } from "@/services/api/models";
+import { Case, Patient, User } from "@/services/api/models";
 import { LiaFileMedicalAltSolid } from "react-icons/lia";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
@@ -24,6 +24,9 @@ import { Button } from "@/components/ui/button";
 import { dateFormatter } from "@/lib/utils";
 import { Link, useRevalidator } from "react-router-dom";
 import { api } from "@/services/api";
+import { MultiSelect } from "../ui/multi-select";
+import { Select } from "../ui/select";
+import { SelectPopover } from "../SelectPopover";
 
 const GenderIcon: Record<string, JSX.Element> = {
   male: <CgGenderMale size={20} />,
@@ -33,9 +36,11 @@ const GenderIcon: Record<string, JSX.Element> = {
 export default function CaseDetail({
   closeDialog,
   caseObj,
+  users,
 }: {
   closeDialog: () => void;
   caseObj?: Case;
+  users?: User[];
 }): JSX.Element {
   const preventCloseOnRowClick = (e: PointerEvent) => {
     const target = e.target as Node;
@@ -47,6 +52,12 @@ export default function CaseDetail({
       e.preventDefault();
     }
   };
+
+  const transformedUsers = users.map((u) => ({
+    ...u,
+    value: `${u.email}`,
+    label: `${u.email}`,
+  }));
 
   if (!caseObj || !caseObj.patient) {
     return <></>;
@@ -73,9 +84,9 @@ export default function CaseDetail({
             </div>
           </SheetHeader>
           <Separator className=" my-3" />
-          <div className="flex-1 flex flex-col gap-8">
+          <div className="flex-1 flex flex-col gap-8 overflow-y-scroll h-[calc(100%-200px)]">
             <PatientDetail patient={caseObj.patient} />
-            <CaseDetailCard caseObj={caseObj} />
+            <CaseDetailCard caseObj={caseObj} users={transformedUsers} />
           </div>
         </div>
       </SheetContent>
@@ -83,7 +94,7 @@ export default function CaseDetail({
   );
 }
 
-function CaseDetailCard({ caseObj }: { caseObj: Case }) {
+function CaseDetailCard({ caseObj, users }: { caseObj: Case; users: User[] }) {
   const [isEditingReport, setIsEditingReport] = useState(false);
   const [caseResult, setCaseResult] = useState(caseObj.result);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -118,6 +129,17 @@ function CaseDetailCard({ caseObj }: { caseObj: Case }) {
           </p>
         </div>
         <SheetDescription>{caseObj?.description}</SheetDescription>
+
+        <div className="my-6 h-7">
+          <p>Collaborators</p>
+          <MultiSelect items={users} />
+        </div>
+
+        <div className="my-6 h-7">
+          <p>Assignee</p>
+          <SelectPopover items={users} initialValue={caseObj.assignee.email} />
+        </div>
+
         <div className="case-result flex-1 mt-6 flex flex-col gap-4 text-sm">
           <h3 className="flex items-center gap-2">
             <span>Report</span>
@@ -128,7 +150,7 @@ function CaseDetailCard({ caseObj }: { caseObj: Case }) {
             value={caseResult}
             onChange={(e) => setCaseResult(e.target.value)}
             placeholder="Add report for this case"
-            className=" h-[calc(100%-124px)]"
+            className=" h-[124px]"
             disabled={!isEditingReport}
           />
           <SheetFooter>

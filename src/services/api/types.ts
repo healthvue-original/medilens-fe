@@ -41,7 +41,7 @@ export type PatientPayload = Omit<Patient, CommonOmit | "user">;
 
 export type CasePayload = Pick<
   Case,
-  "name" | "description" | "hospital_id" | "patient_id"
+  "description" | "hospital_id" | "patient_id"
 >;
 
 export type HospitalPayload = Omit<Hospital, CommonOmit>;
@@ -76,6 +76,7 @@ export type API = {
   login: (userPayload: UserPayload) => Promise<User>;
   logout: () => Promise<void>;
   getUserData: () => Promise<User>;
+  getAllUsers: () => Promise<User[]>;
 
   // patients
   getPatients: () => Promise<Patient[]>;

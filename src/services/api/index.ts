@@ -10,6 +10,8 @@ import {
   removeAuthTokenFromCookies,
 } from "./utils";
 
+const baseURL = import.meta.env.BASE_URL;
+
 export function createAPI({ org }: createAPIProps): API {
   const defaultFetchOptions = {
     method: "POST",
@@ -44,7 +46,7 @@ export function createAPI({ org }: createAPIProps): API {
     (response: Response): Promise<Response> => {
       if (!response.ok) {
         if (response.status === 401) {
-          redirectTo("/auth");
+          redirectTo(`${baseURL}/auth`);
         }
       }
       return next(response);
@@ -66,6 +68,12 @@ export function createAPI({ org }: createAPIProps): API {
       reqTransformers.getUserData,
       fetchAPI,
       resTransformers.getUserData
+    ),
+
+    getAllUsers: asyncPipe(
+      reqTransformers.getAllUsers,
+      fetchAPI,
+      resTransformers.getAllUsers
     ),
 
     getPatients: asyncPipe(
@@ -163,3 +171,4 @@ export function createAPI({ org }: createAPIProps): API {
 }
 
 export const api = createAPI({ org: "healthvue" });
+window.api = api;
