@@ -2,7 +2,10 @@ import { API, ReqTransformer, TransformerProps } from "../types";
 
 export const createReqTransformers = ({
   constructURL,
-}: TransformerProps): Record<keyof API, ReqTransformer<any>> => {
+}: TransformerProps): Record<
+  keyof Omit<API, "logout">,
+  ReqTransformer<any>
+> => {
   return {
     createOrg: async (orgData) => {
       return {
@@ -26,6 +29,13 @@ export const createReqTransformers = ({
         method: "GET",
       };
     },
+    getAllUsers: async () => {
+      return {
+        url: constructURL("/users"),
+        method: "GET",
+      };
+    },
+
     getPatients: async () => {
       return {
         url: constructURL("/patients"),

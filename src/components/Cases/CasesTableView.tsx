@@ -8,7 +8,7 @@ import { Pagination } from "../TableView/Pagination";
 import { GlobalFilter } from "../TableView/GlobalFilter";
 import { Button } from "../ui/button";
 import AddCaseDialog from "./AddCaseDialog";
-import { Case, Hospital, Patient } from "@/services/api/models";
+import { Case, Hospital, Patient, User } from "@/services/api/models";
 import { useDialog } from "@/context/DialogProvider";
 import CaseDetail from "./CaseDetail";
 
@@ -36,24 +36,6 @@ const CasesColumnDef: ColumnDef<Case>[] = [
     enableSorting: false,
     enableHiding: false,
     size: 48,
-  },
-  {
-    id: "name",
-    accessorKey: "name",
-    filterFn: "fuzzy",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          className="p-0"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <FaSort className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    size: 100,
   },
   {
     id: "description",
@@ -94,10 +76,12 @@ export function CasesTableView({
   cases,
   patients,
   hospitals,
+  users,
 }: {
   cases: Case[];
   patients: Patient[];
   hospitals: Hospital[];
+  users: User[];
 }): JSX.Element {
   const dialog = useDialog();
 
@@ -111,6 +95,7 @@ export function CasesTableView({
       <AddCaseDialog
         patients={patients}
         hospitals={hospitals}
+        users={users}
         closeDialog={dialog.close}
       />
     );
@@ -118,12 +103,12 @@ export function CasesTableView({
 
   const onRowClick = (row: Row<Case>) => {
     const caseId = row.getValue("id");
-    console.log(caseId);
 
     dialog.open(
       <CaseDetail
         caseObj={cases.find((c) => c.id === caseId)}
         closeDialog={dialog.close}
+        users={users}
       />
     );
   };
